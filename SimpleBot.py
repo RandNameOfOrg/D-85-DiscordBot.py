@@ -240,31 +240,17 @@ async def smile(ctx):
     await ctx.send("<:boteon:706935391852167208> ")
 
 
-@bot.command(name='kick', help='КИКАЕТ ')
+@bot.command(name='kick', help='КИКАЕТ')
 @commands.has_role('admin')
 async def kick(ctx, member: discord.Member, *, reason=None):
     await member.kick(reason=reason)
-
-
-#@bot.event
-#async def on_message(message):
-#    if str(message.author)=="Daniii_85#0099" or str(message.author)=="bender#4678":
-#        return
-#    print(message.author)
-#    if message.content=="hello":
-#        await message.channel.send("hello")
-#    await bot.process_commands(message)
 
 async def main():
     for f in os.listdir("./cogs"):
         if f.endswith(".py"):
             await bot.load_extension("cogs." + f[:-3])
-    #for i in range(len(cogs)):
-    #    await cogs[i].setup(bot)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-    with open(profiles + 'danil_token.txt', 'r') as f:
-        bot.run(f.readline(100))
-        f.close()
+    bot.run("TOKEN")

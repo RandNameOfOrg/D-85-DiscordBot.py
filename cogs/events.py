@@ -43,7 +43,7 @@ class Com(commands.Cog):
                        f"░░░░░░█░░░░")
 
     @commands.Cog.listener()
-    async def on_member_join(self, member):
+    async def on_member_join(self, member : discord.Member):
         await member.send(
             f"**Добро пожаловать на сервер _Main Test server_** \n"
             f"**Запрещено:**\n\n"

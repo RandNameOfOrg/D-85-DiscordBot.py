@@ -1,8 +1,5 @@
 from __future__ import print_function
-
-import pprint, json
-
-import discord, os.path, apiclient.discovery, httplib2
+import discord, os.path, apiclient.discovery, httplib2, pprint, json
 from discord.ext import commands
 
 class Help(commands.Cog):
@@ -38,8 +35,6 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         await ctx.send(embed=self.helpembed)
-
-
 
 async def setup(bot: commands.Bot):
     cog = bot
