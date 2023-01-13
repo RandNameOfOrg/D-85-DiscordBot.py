@@ -9,22 +9,21 @@ class Help(commands.Cog):
         bot.remove_command('help')
 
         self.helpembed = discord.Embed(title="daniil_85 v" + self.value, color=0x4441d9)
-        self.helpembed.set_author(name="помощь")
-        self.helpembed.add_field(name="setreports", value="удаление жалоб с участника. !setreports @test",
-                                 inline=True)
-        self.helpembed.add_field(name="report", value="жалоба на участника !report @test", inline=True)
+        self.helpembed.set_author(name="__")
         self.helpembed.add_field(name="brush", value="сумма n+b", inline=True)
         self.helpembed.add_field(name="cat", value="giv", inline=True)
+        self.helpembed.add_field(name="cube", value="3D cube n * b * c", inline=True)
         self.helpembed.add_field(name="difference", value="вычетание n-b", inline=True)
         self.helpembed.add_field(name="divide", value="деление n/b", inline=True)
         self.helpembed.add_field(name="dog", value=" giv", inline=True)
-        self.helpembed.add_field(name="help ", value="Shows this message", inline=True)
+        self.helpembed.add_field(name="date", value="выводит дату", inline=True)
+        self.helpembed.add_field(name="setreports", value="удаление жалоб с участника. !setreports @test",
+                                 inline=True)
+        self.helpembed.add_field(name="report", value="жалоба на участника !report @test", inline=True)
         self.helpembed.add_field(name="multiply", value="умножение n*b", inline=True)
         self.helpembed.add_field(name="smile", value="эмодзи это-го сервера", inline=True)
         self.helpembed.add_field(name="perimeter", value="perimeter n*b", inline=True)
-        self.helpembed.add_field(name="cube", value="3D cube n * b * c", inline=True)
         self.helpembed.add_field(name="vote", value="голосование (принять,отклонить)", inline=True)
-        self.helpembed.add_field(name="date", value="выводит дату", inline=True)
         self.helpembed.add_field(name="setlog",
                                  value="изменяет канал оповещения о включении бота. !Использовать сервер с ботом!", inline=True)
         self.helpembed.add_field(name="предупреждение", value="некоторые команды стоят с задержкой", inline=True)

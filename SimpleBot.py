@@ -1,9 +1,7 @@
 from __future__ import print_function
 import os.path
 
-#import cogs.file.reload as rl
 from discord.ext import commands, tasks
-#from discord_components import DiscordComponents, Button, ButtonStyle
 from discord.utils import get
 from discord.ui import Button, View
 import os, sys, json, discord, datetime, asyncio
@@ -59,23 +57,13 @@ async def setreports(ctx, member: discord.Member):
     set(member)
     await ctx.send("✅ Успешно!")
 
-@bot.event
-async def on_member_join(member):
-    channel = client.get_channel(839807318162145290)
-
-    role = discord.utils.get (member.guild.roles, id=839807022949335050)
-    print ('user join the servers')
-    await member.add_roles( role )
-    await channel.send( embed = discord.Embed( description = f'``{member.name}`` присоиединился', color = 0x0c0c0c))
 
 @bot.command()
 async def reloadcog(ctx, ext):
     if ctx.author.id == 849351619878715392:
         bot.unload_extension(f"Cogs.{ext}")
         bot.load_extension(f"Cogs.{ext}")
-        await ctx.send("tesog reloaded")
-    else:
-        await ctx.send("1")
+        await ctx.send("cog'и перезагружены")
 
 
 @bot.command()
