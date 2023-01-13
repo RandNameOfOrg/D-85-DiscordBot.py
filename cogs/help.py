@@ -10,7 +10,7 @@ class Help(commands.Cog):
 
         self.helpembed = discord.Embed(title="daniil_85 v" + self.value, color=0x4441d9)
         self.helpembed.set_author(name="помощь")
-        self.helpembed.add_field(name="setreports", value="удаление жалоб с участника. при роли admin! !setreports @test 0",
+        self.helpembed.add_field(name="setreports", value="удаление жалоб с участника. !setreports @test",
                                  inline=True)
         self.helpembed.add_field(name="report", value="жалоба на участника !report @test", inline=True)
         self.helpembed.add_field(name="brush", value="сумма n+b", inline=True)

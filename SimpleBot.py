@@ -55,9 +55,9 @@ async def reload(ctx):
 
 @bot.command()
 @commands.has_role("admin")
-async def setreports(ctx, member: discord.Member, reason: str):
-    if reason.lower() == "0" or reason.lower() == "1":
-        set(member)
+async def setreports(ctx, member: discord.Member):
+    set(member)
+    await ctx.send("✅ Успешно!")
 
 @bot.event
 async def on_member_join(member):
