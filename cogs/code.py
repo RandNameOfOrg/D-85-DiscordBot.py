@@ -12,34 +12,23 @@ class code(commands.Cog):
         self.bot = bot
 
 
-    @bot.command()
+    @commands.command()
     @commands.has_permissions(manage_messages=True)
-    async def clear(ctx, am: int):
+    async def clear(self, ctx, am: int):
         await ctx.channel.purge(limit=am)
 
-    @bot.command()
+    @commands.command()
     @commands.has_role("admin")
-    async def setreports(ctx, member: discord.Member):
+    async def setreports(self, ctx, member: discord.Member):
         set(member)
         await ctx.send("✅ Успешно!")
 
-    @bot.command()
-    async def reloadcog(ctx, ext):
+    @commands.command()
+    async def reloadcog(self, ctx, ext):
         if ctx.author.id == 849351619878715392:
             bot.unload_extension(f"Cogs.{ext}")
             bot.load_extension(f"Cogs.{ext}")
             await ctx.send("cog'и перезагружены")
-
-    @app.context_menu(name='report')
-    async def report(ctx, member: discord.Member):
-
-        with open(profiles + 'users.json', 'r') as file:
-            data = json.load(file)
-            if data[str(member.id)]['WARNS'] >= 4:
-                await ctx.send(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
-                                                   description=f"У {member.name} уже {data[str(member.id)]['WARNS'] + 1} Жалоб!!!",
-                                                   colour=discord.Color.red()))
-            file.close()
 
         with open(profiles + 'users.json', 'w') as file:
             data[str(member.id)]['WARNS'] += 1
@@ -47,8 +36,8 @@ class code(commands.Cog):
             file.close()
         await ctx.send(embed=discord.Embed(title="Жалоба отправлена.", colour=discord.Color.dark_gray))
 
-    @bot.command()
-    async def setlog(ctx, id):
+    @commands.command()
+    async def setlog(self, ctx, id):
         try:
             print("Новое Id: " + id)
             f = open(profiles + 'chlog.txt', 'w')
@@ -62,8 +51,8 @@ class code(commands.Cog):
             await ctx.send(
                 embed=discord.Embed(description="Error! неверное ID или сбой програмы", colour=discord.Color.red()))
 
-    @bot.command()
-    async def vote(ctx, *, title):
+    @commands.command()
+    async def vote(self, ctx, *, title):
         try:
             msg = await ctx.send(
                 embed=discord.Embed(title=title),
@@ -76,7 +65,7 @@ class code(commands.Cog):
         except:
             await ctx.send(embed=discord.Embed(description="используйте !vote [text]", colour=discord.Color.red()))
 
-    @bot.event
+    @commands.Cog.listener()
     async def on_button_click(interaction):
         response = await bot.wait_for("button_click")
         name = voteIdTexts.get(response.message.id)
@@ -85,16 +74,16 @@ class code(commands.Cog):
         else:
             await response.channel.send(response.author.mention + " не принял,vote: " + name)
 
-    @bot.event
-    async def on_command_error(ctx, error):
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("команда использована не правильно")
         elif isinstance(error, commands.MissingRole) or isinstance(error, commands.MissingPermissions):
             await ctx.send("")
 
-    @bot.command()
+    @commands.command()
     @commands.has_role('Python Developer')
-    async def unreport(ctx, mem: discord.Member):
+    async def unreport(self, ctx, mem: discord.Member):
         if ctx.author.id == 849351619878715392:
             await ctx.delete()
             with open(profiles + "users.json", "r") as file:
@@ -108,8 +97,8 @@ class code(commands.Cog):
         else:
             await ctx.send("Пользователь не вертифицырован!!")
 
-    @bot.command()
-    async def bd(ctx, user):
+    @commands.command()
+    async def bd(self, ctx, user):
         enter = bd_enter(user)
         await ctx.send(enter)
 
@@ -124,71 +113,70 @@ class code(commands.Cog):
                     enter = "Ошибка! User не найден. Использование !bd user#0000"
                 return enter
 
-    @bot.command()
-    async def date(ctx):
+    @commands.command()
+    async def date(self, ctx):
         now = datetime.datetime.now()
         await ctx.send(now.strftime("сейчас %y.%m.%d по МСК"))
 
-    @bot.command()
-    async def test_command(ctx):
-        await ctx.send("тестовых команд пока нет😟😉 или вы о них не знаете🤐") \
- \
-        @ bot.command()
+    @commands.command()
+    async def test_command(self, ctx):
+        await ctx.send("тестовых команд пока нет😟😉 или вы о них не знаете🤐")
 
-    async def cat(ctx):
+    @commands.command()
+    async def cat(self, ctx):
         await ctx.send("https://i.gifer.com/JtaW.gif")
 
-    @bot.command(name='dog', help='giv')
-    async def dog(ctx):
+    @commands.command(name='dog', help='giv')
+    async def dog(self, ctx):
         await ctx.send("https://i.gifer.com/2g.gif")
 
-    @bot.command(help='perimeter')
-    async def perimeter(ctx, x, y):
+    @commands.command(help='perimeter')
+    async def perimeter(self, ctx, x, y):
         try:
             await ctx.send(int(x) * int(y))
         except:
             await ctx.send(embed=discord.Embed(description="Используйте цифры", colour=discord.Color.red()))
 
-    @bot.command(help='3D cube')
-    async def cube(ctx, x, y, z):
+    @commands.command(help='3D cube')
+    async def cube(self, ctx, x, y, z):
         try:
             await ctx.send(int(x) * int(y) * int(z))
         except:
             await ctx.send(embed=discord.Embed(description="Используйте цифры", colour=discord.Color.red()))
 
-    @bot.command(name='difference', help='вычетание')
-    async def difference(ctx, w, y):
+    @commands.command(name='difference', help='вычетание')
+    async def difference(self, ctx, w, y):
         try:
             await ctx.send(int(w) - int(y))
         except:
             await ctx.send(embed=discord.Embed(description="Используйте цифры", colour=discord.Color.red()))
 
-    @bot.command(name='multiply', help='умножение')
-    async def multiply(ctx, w, y):
+    @commands.command(name='multiply', help='умножение')
+    async def multiply(self, ctx, w, y):
         try:
             await ctx.send(int(w) * int(y))
         except:
             await ctx.send(
                 embed=discord.Embed(description="Используйте цифры", colour=discord.Color.red()))
 
-    @bot.command(name='divide', help='деление')
-    async def divide(ctx, w, y):
+    @commands.command(name='divide', help='деление')
+    async def divide(self, ctx, w, y):
         if y == "0":
             await ctx.send("wes")
         else:
             await ctx.send(int(w) / int(y))
 
-    @bot.command(name='brush', help='сумма')
-    async def brush(ctx, w, y):
+    @commands.command(name='brush', help='сумма')
+    async def brush(self, ctx, w, y):
         await ctx.send(int(w) + int(y))
 
-    @bot.command(name='smile', help='эмодзи это-го сервера')
-    async def smile(ctx):
+    @commands.command(name='smile', help='эмодзи это-го сервера')
+    async def smile(self, ctx):
         await ctx.send("<:boteon:706935391852167208> ")
 
-    @bot.command(name='kick', help='КИКАЕТ')
+    @commands.command(name='kick', help='КИКАЕТ')
     @commands.has_role('admin')
-    async def kick(ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
 
 async def setup(bot: commands.Bot):

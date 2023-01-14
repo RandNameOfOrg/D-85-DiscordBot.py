@@ -25,7 +25,7 @@ class Help(commands.Cog):
         self.helpembed.add_field(name="setlog", value="*скрыто*", inline=True)
         self.helpembed.add_field(name="предупреждение", value="некоторые команды стоят с задержкой", inline=True)
         self.helpembed.add_field(name="test_command", value="новые команды (но тестовые)", inline=True)
-        self.helpembed.add_field(name='*Не в общем доступе*', inline=False)
+        self.helpembed.add_field(name='*Не в общем доступе*', value='(не доступно)', inline=False)
         self.helpembed.add_field(name="setreports", value="удаление жалоб с участника. !setreports @test", inline=True)
         self.helpembed.set_footer(text="пока всё!")
 

@@ -2,16 +2,14 @@ from __future__ import print_function
 import os.path
 
 from discord.ext import commands, tasks
-from discord import app_commands
 import os, sys, json, discord, datetime, asyncio
 from cogs import help, events
 
 profiles = "cogs/file/"
 intents = discord.Intents.all()
 intents.members = True
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=888104078637428756)
 voteIdTexts = {}
-app = app_commands.CommandTree(bot)
 
 
 
