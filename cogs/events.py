@@ -16,9 +16,8 @@ class Com(commands.Cog):
 
     @change_presence.before_loop
     async def before_change_presence(self):
-        print("Bot loading")
+        print(f"Bot {self.bot.name} start!")
         await self.bot.wait_until_ready()
-        print("Bot loading2")
 
 
 
