@@ -4,6 +4,7 @@ import os.path
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord.ui import Button, View
+from discord import app_commands
 import os, sys, json, discord, datetime, asyncio
 from cogs import help, events
 
@@ -12,6 +13,9 @@ intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 voteIdTexts = {}
+app = app_commands.CommandTree(bot)
+
+
 
 with open(profiles + '\\chlog.txt', 'r') as f:
     console = bot.get_channel(int(f.readline(100)))
@@ -66,7 +70,7 @@ async def reloadcog(ctx, ext):
         await ctx.send("cog'и перезагружены")
 
 
-@bot.command()
+@app.context_menu(name='report')
 async def report(ctx, member: discord.Member):
 
     with open(profiles + 'users.json', 'r') as file:
@@ -233,7 +237,9 @@ async def main():
         if f.endswith(".py"):
             await bot.load_extension("cogs." + f[:-3])
 
+w = discord.Game("your massages")
 
 if __name__ == "__main__":
     asyncio.run(main())
     bot.run("TOKEN")
+    bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, activity=w))
