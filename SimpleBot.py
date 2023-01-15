@@ -4,21 +4,19 @@ import os.path
 from discord.ext import commands, tasks
 import os, sys, json, discord, datetime, asyncio
 from cogs import help, events
+from cogs.files import config
 
-profiles = "cogs/file/"
+profiles = "cogs\\file\\"
 intents = discord.Intents.all()
 intents.members = True
-bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=888104078637428756)
+bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=config.APP_ID)
 voteIdTexts = {}
 
 
 
-with open(profiles + '\\chlog.txt', 'r') as f:
-    console = bot.get_channel(int(f.readline(100)))
-    f.close()
 
-if not os.path.exists(profiles + '\\users.json'):
-    with open(profiles + '\\users.json', 'w') as file:
+if not os.path.exists(profiles + 'users.json'):
+    with open(profiles + 'users.json', 'w') as file:
         file.write("{}")
         file.close()
     for guild in bot.guilds:
@@ -46,5 +44,5 @@ w = discord.Game("your massages")
 
 if __name__ == "__main__":
     asyncio.run(main())
-    bot.run("Token")
+    bot.start(config.TOKEN)
     bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, activity=w))

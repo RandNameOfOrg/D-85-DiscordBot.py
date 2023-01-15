@@ -5,7 +5,7 @@ from discord.ext import commands
 class Help(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
-        self.value = "2.1.1"
+        self.value = "2.1.2"
         bot.remove_command('help')
 
         self.helpembed = discord.Embed(title="daniil_85 v" + self.value, color=0x4441d9)
@@ -22,7 +22,6 @@ class Help(commands.Cog):
         self.helpembed.add_field(name="smile", value="эмодзи это-го сервера", inline=True)
         self.helpembed.add_field(name="perimeter", value="perimeter n*b", inline=True)
         self.helpembed.add_field(name="vote", value="голосование (принять,отклонить)", inline=True)
-        self.helpembed.add_field(name="setlog", value="*скрыто*", inline=True)
         self.helpembed.add_field(name="предупреждение", value="некоторые команды стоят с задержкой", inline=True)
         self.helpembed.add_field(name="test_command", value="новые команды (но тестовые)", inline=True)
         self.helpembed.add_field(name='*Не в общем доступе*', value='(не доступно)', inline=False)

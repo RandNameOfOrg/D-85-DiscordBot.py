@@ -37,21 +37,6 @@ class code(commands.Cog):
         await ctx.send(embed=discord.Embed(title="Жалоба отправлена.", colour=discord.Color.dark_gray))
 
     @commands.command()
-    async def setlog(self, ctx, id):
-        try:
-            print("Новое Id: " + id)
-            f = open(profiles + 'chlog.txt', 'w')
-            f.write("" + id)
-            f.close()
-            console = bot.get_channel(id)
-            await ctx.send(
-                embed=discord.Embed(description="Успешно! Оповещение о включении будет изменено после перезагрузки",
-                                    colour=discord.Color.green()))
-        except:
-            await ctx.send(
-                embed=discord.Embed(description="Error! неверное ID или сбой програмы", colour=discord.Color.red()))
-
-    @commands.command()
     async def vote(self, ctx, *, title):
         try:
             msg = await ctx.send(
