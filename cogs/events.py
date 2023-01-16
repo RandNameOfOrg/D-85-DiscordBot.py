@@ -1,25 +1,23 @@
 import discord
 from discord.ext import commands, tasks
+from contextlib import asynccontextmanager
 
 class Com(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.ffile = 'E:\\Программа\\pythonProject1\\cogs\\file'
-        self.change_presence.start()
+        # self.change_presence.start()
 
 
-    @tasks.loop(seconds=1.0)
-    async def change_presence(self):
-        print("Start")
-        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="The Bee Movie"))
-
-
-    @change_presence.before_loop
-    async def before_change_presence(self):
-        print(f"Bot {self.bot.name} start!")
-        await self.bot.wait_until_ready()
-
-
+    # @tasks.loop(minutes=10.0)
+    # async def change_presence(self):
+    #     pass
+    #
+    # @change_presence.before_loop
+    # async def before_change_presence(self):
+    #     await self.bot.wait_until_ready()
+    #     await self.bot.change_presence(
+    #         activity=discord.Activity(type=discord.ActivityType.watching, name="Your's messages"))
 
     @commands.command()
     async def python_skeleton(self, ctx):

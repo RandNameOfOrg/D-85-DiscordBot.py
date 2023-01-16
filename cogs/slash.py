@@ -1,35 +1,43 @@
 from __future__ import print_function
 
-import asyncio
-
-import discord, os.path, pprint, json
+import discord, json, os, sqlite3
 from discord.ext import commands
 from discord import app_commands
-from files import config
+from cogs.file import config
+
+voteIdTexts = {}
 
 
 class slash(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
+        # self.c = self.bot.get_channel(config.report_ch_id)
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")
-    async def report(self, interaction: discord.Interaction, member: discord.Member):
-        interaction.response.send_massage("test")
-        with open(profiles + 'users.json', 'r') as file:
-            data = json.load(file)
-            if data[str(member.id)]['WARNS'] >= 4:
-                await interaction.response.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
-                                                   description=f"У {member.name} уже {data[str(member.id)]['WARNS'] + 1} Жалоб!!!",
-                                                   colour=discord.Color.red()))
-            file.close()
+    async def report(self, Interaction: discord.Interaction, member: discord.Member):
+        data = sqlite3.connect('users.db')
+        cursor = data.cursor()
+        message = Interaction.response
+        cursor.execute(f"SELECT warns FROM users WHERE user_id = {member.id}")
+        db_data = cursor.fetchone()[0]
+        cursor.execute(f"UPDATE users SET warns = {db_data+1} WHERE user_id = {member.id}")
+        data.commit()
+        if db_data+1 >= 5:
+            await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
+                                                description=f"У {member.name} уже {db_data+1} Жалоб!!!",
+                                                colour=discord.Color.red()))
+        else:
+            await message.send_message('Жалоба отправлена')
+        data.close()
 
 
-    async def sync(self, guild) -> None:
-        fmt = await bot.tree.sync(guild=guild)
+    @commands.command()
+    async def sync(self, ctx) -> None:
+        fmt = await bot.tree.sync(guild=ctx.guild)
         print(f"sn {len(fmt)}")
 
-    for guild in config.guilds:
-        asyncio.run(sync(guild=guild))
+    # for guild in config.guilds:
+    #     asyncio.run(sync(guild=guild))
 
 
 async def setup(bot: commands.Bot):

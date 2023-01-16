@@ -10,7 +10,19 @@ import os, sys, json, discord, datetime
 class code(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
+        self.profiles = os.path.abspath(__file__)[:-13] + "cogs\\"
 
+    def set(me):
+        with open(profiles + "users.json", "r") as file:
+            data = json.load(file)
+            file.close()
+        with open(profiles + "users.json", "w") as file:
+            data[str(me.id)] = {
+                "LVL": 0,
+                "NAME": me.name,
+                "WARNS": 0
+            }
+            json.dump(data, file, indent=6)
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -23,41 +35,6 @@ class code(commands.Cog):
         set(member)
         await ctx.send("✅ Успешно!")
 
-    @commands.command()
-    async def reloadcog(self, ctx, ext):
-        if ctx.author.id == 849351619878715392:
-            bot.unload_extension(f"Cogs.{ext}")
-            bot.load_extension(f"Cogs.{ext}")
-            await ctx.send("cog'и перезагружены")
-
-        with open(profiles + 'users.json', 'w') as file:
-            data[str(member.id)]['WARNS'] += 1
-            json.dump(data, file, indent=6)
-            file.close()
-        await ctx.send(embed=discord.Embed(title="Жалоба отправлена.", colour=discord.Color.dark_gray))
-
-    @commands.command()
-    async def vote(self, ctx, *, title):
-        try:
-            msg = await ctx.send(
-                embed=discord.Embed(title=title),
-                components=[
-                    Button(style=ButtonStyle.green, label="Accept", emoji="✅"),
-                    Button(style=ButtonStyle.red, label="cancellation", emoji="❌")
-                ]
-            )
-            voteIdTexts.update({msg.id: title})
-        except:
-            await ctx.send(embed=discord.Embed(description="используйте !vote [text]", colour=discord.Color.red()))
-
-    @commands.Cog.listener()
-    async def on_button_click(interaction):
-        response = await bot.wait_for("button_click")
-        name = voteIdTexts.get(response.message.id)
-        if response.component.label == "Accept":
-            await response.channel.send(response.author.mention + " принял,vote: " + name)
-        else:
-            await response.channel.send(response.author.mention + " не принял,vote: " + name)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
