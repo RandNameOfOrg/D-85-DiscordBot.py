@@ -14,7 +14,7 @@ s.close()
 data = sqlite3.connect('users.db')
 cursor = data.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS users(
-    user_id INT NOT NULL,
+    id INT UNIQUE,
     discord_name TEXT,
     rang INT DEFAULT 0,
     warns INT DEFAULT 0
@@ -35,16 +35,17 @@ async def on_ready():
     data = sqlite3.connect('users.db')
     cursor = data.cursor()
     cursor.execute("SELECT * FROM users")
-    if cursor.fetchall() != []:
+    if cursor.fetchall() == []:
         for guild in bot.guilds:
             for member in guild.members:
-                cursor.execute(f"INSERT INTO users VALUES(?, ?, 0, 0);", (member.id, member.name,))
+                cursor.execute(f"INSERT INTO users VALUES('{member.id}', '{member.name}', 0, 0);")
                 data.commit()
     data.close()
 
-
-
-
+@bot.command()
+async def sync(ctx) -> None:
+    fmt = await bot.tree.sync(guild=ctx.guild)
+    print(f"synced {len(fmt)}")
 
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по МСК",

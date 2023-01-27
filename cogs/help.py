@@ -3,6 +3,8 @@ import discord
 from discord.ext import commands
 from cogs.file.config import VERSION, NAME
 
+from discord import app_commands
+
 class Help(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
@@ -29,10 +31,14 @@ class Help(commands.Cog):
         self.helpembed.set_footer(text=self.value[0])
         self.helpembed.set_author(name="daniil6678#9902")
 
-
+    @app_commands.command(name="help", description="Сказать от имени бота")
+    async def slash_help(self, Interaction: discord.Interaction):
+        await Interaction.response.send_message(embed=self.helpembed)
     @commands.command()
     async def help(self, ctx):
-        await ctx.send(embed=self.helpembed)
+        await ctx.send(embed=discord.Embed(title="Help Command",
+                        description="Команда help в новом стиле, и для её исползования пишите /help",
+                        colour=discord.Color.orange()))
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Help(bot))
