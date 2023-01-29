@@ -10,11 +10,15 @@ from discord import app_commands
 import os, sys, json, discord, datetime
 import App
 
-print(time.localtime())
+
+
 class code(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.profiles = os.path.abspath(__file__)[:-13] + "cogs\\"
+        self.bot.tree.sync()
+
+
 
     # def set(me):
     #     with open(profiles + "users.json", "r") as file:
@@ -28,7 +32,7 @@ class code(commands.Cog):
     #         }
     #         json.dump(data, file, indent=6)
 
-    @commands.command()
+    @commands.hybrid_command(name='clear', with_app_command=True)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, am: int):
         await ctx.channel.purge(limit=(am+1))
@@ -37,16 +41,16 @@ class code(commands.Cog):
     async def on_command_error(self, ctx, error):
         await ctx.reply(error, ephemeral=True)
 
-    @commands.command()
+    @commands.hybrid_command(name='date', with_app_command=True)
     async def date(self, ctx):
         now = datetime.datetime.now()
         await ctx.send(now.strftime("сейчас %y.%m.%d по GMT+3"))
 
-    @commands.hybrid_command(name="test", with_app_command=True, description="Testing")
+    @commands.hybrid_command(name='test_command', with_app_command=True)
     async def test_command(self, ctx: commands.Context):
         await ctx.reply("скоро все команды станут такими")
 
-    @commands.command()
+    @commands.command() #name='ctk', with_app_command=True
     async def ctk(self, ctx, *message):
         text = ''
         for i in message:
@@ -55,19 +59,19 @@ class code(commands.Cog):
         # await ctx.send_message(a)
         await ctx.reply(a)
 
-    @commands.command()
+    @commands.hybrid_command(name='cat', with_app_command=True)
     async def cat(self, ctx):
         await ctx.reply("https://i.gifer.com/JtaW.gif")
 
-    @commands.command(name='dog', help='giv')
+    @commands.hybrid_command(name='dog', with_app_command=True)
     async def dog(self, ctx):
         await ctx.reply("https://i.gifer.com/2g.gif")
 
-    @commands.command(name='smile', help='эмодзи это-го сервера')
+    @commands.hybrid_command(name='smile', with_app_command=True)
     async def smile(self, ctx):
         await ctx.send("<:boteon:706935391852167208> ")
 
-    @commands.command(name='kick', help='КИКАЕТ')
+    @commands.hybrid_command(name='kick', with_app_command=True)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)

@@ -12,6 +12,7 @@ voteIdTexts = {}
 class slash(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
+        self.bot.tree.sync()
         # self.c = self.bot.get_channel(config.report_ch_id)
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")

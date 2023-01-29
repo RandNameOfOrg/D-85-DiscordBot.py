@@ -1,6 +1,5 @@
 from __future__ import print_function
-import os.path
-import time
+import os.path, time
 
 from discord.ext import commands
 import os, json, discord, asyncio, logging
@@ -45,7 +44,7 @@ async def on_ready():
 @bot.command()
 async def sync(ctx) -> None:
     fmt = await bot.tree.sync(guild=ctx.guild)
-    print(f"synced {len(fmt)}")
+    await ctx.send(f"synced {len(fmt)}")
 
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по МСК",

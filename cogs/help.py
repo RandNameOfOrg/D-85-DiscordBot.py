@@ -10,6 +10,7 @@ class Help(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.value = [NAME, VERSION]
+        self.bot.tree.sync()
         bot.remove_command('help')
 
         self.helpembed = discord.Embed(title=f"{self.value[0]} v{self.value[1]}", color=0x4441d9)
@@ -20,21 +21,13 @@ class Help(commands.Cog):
         self.helpembed.add_field(name="smile", value="эмодзи это-го сервера", inline=False)
         self.helpembed.add_field(name="vote", value="голосование (принять,отклонить) *НЕ РАБОТАЕТ*", inline=False)
         self.helpembed.add_field(name="test_command", value="новые команды (самые новые)", inline=False)
-        self.helpembed.add_field(name="ctk", value=" | !tu (message)", inline=False)
+        self.helpembed.add_field(name="ctk", value=" | !ctk (message)", inline=False)
         self.helpembed.set_footer(text=self.value[0])
         self.helpembed.set_author(name="by daniil6678#9902")
 
-    @app_commands.command(name="help", description="help")
-    async def slash_help(self, Interaction: discord.Interaction):
-        await Interaction.response.send_message(embed=self.helpembed)
-
-    @commands.command()
+    @commands.hybrid_command(name="help", with_app_command=True)
     async def help(self, ctx):
         await ctx.send(embed=self.helpembed)
-        # await self.bot.tree.sync(guild=ctx.guild)
-        # await ctx.send(embed=discord.Embed(title="Help Command",
-        #                                    description="Команда help в новом стиле, и для её исползования пишите /help",
-        #                                    colour=discord.Color.orange()))
 
 
 async def setup(bot: commands.Bot):

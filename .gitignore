@@ -155,3 +155,4 @@ cython_debug/
 /cogs/off/
 /st.py
 /cogs/off/
+/users.db
