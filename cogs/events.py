@@ -2,12 +2,12 @@ import discord
 from discord.ext import commands, tasks
 from contextlib import asynccontextmanager
 
+
 class Com(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.ffile = 'E:\\Программа\\pythonProject1\\cogs\\file'
         # self.change_presence.start()
-
 
     # @tasks.loop(minutes=10.0)
     # async def change_presence(self):
@@ -21,7 +21,7 @@ class Com(commands.Cog):
 
     @commands.command()
     async def python_skeleton(self, ctx):
-        await ctx.channel.purge(limit = 1);
+        await ctx.channel.purge(limit=1);
         await ctx.send(f"*Пасхалка обнаружена* \n"
                        f" ░░░░▐▀█▀▌░░░░▀█▄░░░ \n"
                        f"░░░░░▐█▄█▌░░░░░░▀█▄░░ \n"
@@ -30,7 +30,7 @@ class Com(commands.Cog):
                        f"░░░█▀▄▄▄█░▀▀░░ \n"
                        f"░░░▌░▄▄▄▐▌▀▀▀░░ Это Скелетик Петя \n"
                        f"▄░▐░░░▄▄░█░▀▀ ░░ Копируйте его и \n"
-                       f"▀█▌░░░▄░▀█▀░▀ ░░ вставляйте в каждый\n" 
+                       f"▀█▌░░░▄░▀█▀░▀ ░░ вставляйте в каждый\n"
                        f"░░░░░░░▄▄▐▌▄▄░░░ дискорд сервер\n"
                        f"░░░░░░░▀███▀█░▄░░ Тогда, он сможет\n"
                        f"░░░░░░▐▌▀▄▀▄▀▐▄░░ захватить\n"
@@ -40,7 +40,7 @@ class Com(commands.Cog):
                        f"░░░░░░█░░░░")
 
     @commands.Cog.listener()
-    async def on_member_join(self, member : discord.Member):
+    async def on_member_join(self, member: discord.Member):
         await member.send(
             f"**Добро пожаловать на сервер _Main Test server_** \n"
             f"**Запрещено:**\n\n"
@@ -62,7 +62,6 @@ class Com(commands.Cog):
             f"Наказание: Мут\n\n"
             f"**9.Отправка вредоносного ПО**\n"
             f"Наказание: Бан")
-
 
 
 async def setup(bot: commands.Bot):

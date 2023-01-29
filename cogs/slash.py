@@ -8,6 +8,7 @@ from cogs.file import config
 voteIdTexts = {}
 
 
+
 class slash(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
@@ -20,18 +21,18 @@ class slash(commands.Cog):
         message = Interaction.response
         cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}")
         db_data = cursor.fetchone()[0]
-        cursor.execute(f"UPDATE users SET warns = {db_data+1} WHERE id = {member.id}")
+        cursor.execute(f"UPDATE users SET warns = {db_data + 1} WHERE id = {member.id}")
         data.commit()
         data.close()
-        if db_data+1 >= 5:
+        if db_data + 1 >= 5:
             await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
-                                                description=f"У {member.name} уже {db_data+1} Жалоб!!!",
-                                                colour=discord.Color.red()))
+                                                           description=f"У {member.name} уже {db_data + 1} Жалоб!!!",
+                                                           colour=discord.Color.red()))
         else:
             await message.send_message('Жалоба отправлена')
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
-    async def unreport(self, Interaction: discord.Interaction, member: discord.Member, numbers: int=1):
+    async def unreport(self, Interaction: discord.Interaction, member: discord.Member, numbers: int = 1):
         data = sqlite3.connect('users.db')
         cursor = data.cursor()
         message = Interaction.response
@@ -39,7 +40,7 @@ class slash(commands.Cog):
         db_data = cursor.fetchone()[0]
         cursor.execute(f"SELECT rang FROM users WHERE id = {member.id}")
         if cursor.fetchone()[0] >= 1:
-            if db_data > 0 & number==1:
+            if db_data > 0 & number == 1:
                 cursor.execute(f"UPDATE users SET warns = {db_data - 1} WHERE id = {member.id}")
                 data.commit()
             elif db_data >= number:
@@ -50,7 +51,6 @@ class slash(commands.Cog):
         else:
             await message.send_message('Слишком низкий уровень')
         data.close()
-
 
     # @app_commands.command(name="help", description="Сказать от имени бота")
     # @app_commands.describe(numbers='')
@@ -63,9 +63,5 @@ class slash(commands.Cog):
     # ])
 
 
-    # for guild in config.guilds:
-    #     asyncio.run(sync(guild=guild))
-
-
 async def setup(bot: commands.Bot):
-    await bot.add_cog(slash(bot), guilds=config.guilds)
+    await bot.add_cog(slash(bot))
