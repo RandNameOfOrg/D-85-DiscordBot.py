@@ -1,5 +1,5 @@
 from __future__ import print_function
-import discord
+import discord, App
 from discord.ext import commands
 from cogs.file.config import VERSION, NAME
 
