@@ -1,6 +1,6 @@
 import discord
 
-VERSION = '2.1.5'
+VERSION = '2.1.7'
 NAME = 'D_85'
 # report_ch_id = 888097838821699604
 
