@@ -1,13 +1,10 @@
-from __future__ import print_function
 import os.path
-import time
 
 from .file import config
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord.ui import Button, View
-from discord import app_commands
-import os, sys, json, discord, datetime
+import os, sys, discord, datetime, time
 import App
 
 
@@ -16,22 +13,10 @@ class code(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.profiles = os.path.abspath(__file__)[:-13] + "cogs\\"
-        self.bot.tree.sync()
 
-
-
-    # def set(me):
-    #     with open(profiles + "users.json", "r") as file:
-    #         data = json.load(file)
-    #         file.close()
-    #     with open(profiles + "users.json", "w") as file:
-    #         data[str(me.id)] = {
-    #             "LVL": 0,
-    #             "NAME": me.name,
-    #             "WARNS": 0
-    #         }
-    #         json.dump(data, file, indent=6)
-
+    @commands.command()
+    async def sync_code(self, ctx):
+        await self.bot.tree.sync()
     @commands.hybrid_command(name='clear', with_app_command=True)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, am: int):
@@ -55,9 +40,8 @@ class code(commands.Cog):
         text = ''
         for i in message:
             text=text+' '+i
-        a = App.app.open_dialog(title_="Запрос", text_=f'Что ответить на {text}')
-        # await ctx.send_message(a)
-        await ctx.reply(a)
+        # await ctx.send_message(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
+        await ctx.reply(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
 
     @commands.hybrid_command(name='cat', with_app_command=True)
     async def cat(self, ctx):

@@ -1,9 +1,8 @@
 from __future__ import print_function
 
-import discord, json, os, sqlite3
+import discord, sqlite3
 from discord.ext import commands
 from discord import app_commands
-from cogs.file import config
 
 voteIdTexts = {}
 
@@ -13,7 +12,6 @@ class slash(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.bot.tree.sync()
-        # self.c = self.bot.get_channel(config.report_ch_id)
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")
     async def report(self, Interaction: discord.Interaction, member: discord.Member):
@@ -33,7 +31,7 @@ class slash(commands.Cog):
             await message.send_message('Жалоба отправлена')
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
-    async def unreport(self, Interaction: discord.Interaction, member: discord.Member, numbers: int = 1):
+    async def unreport(self, Interaction: discord.Interaction, member: discord.Member, number: int = 1):
         data = sqlite3.connect('users.db')
         cursor = data.cursor()
         message = Interaction.response

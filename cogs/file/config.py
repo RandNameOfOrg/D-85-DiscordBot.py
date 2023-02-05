@@ -1,8 +1,5 @@
-import discord
-
-VERSION = '2.1.7'
+VERSION = '2.1.8'
 NAME = 'D_85'
-# report_ch_id = 888097838821699604
 
 TOKEN = 'TOKEN'
 APP_ID = 1234  #APPLICATION_ID

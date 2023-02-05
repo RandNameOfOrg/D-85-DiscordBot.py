@@ -2,7 +2,7 @@ from __future__ import print_function
 import os.path, time
 
 from discord.ext import commands
-import os, json, discord, asyncio, logging
+import os, discord, asyncio
 from cogs.file import config
 import sqlite3
 from colorama import Back, Fore, Style
@@ -21,7 +21,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users(
 data.commit()
 data.close()
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 profiles = os.path.abspath(__file__)[:-12] + "cogs\\"
 intents = discord.Intents.all()
 intents.members = True

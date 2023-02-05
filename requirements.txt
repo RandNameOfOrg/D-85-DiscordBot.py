@@ -1,0 +1,7 @@
+discord.py>=2.1.0
+discord==1.7.3
+datetime==4.5
+asyncio==3.4.3
+colorama>=0.4.6
+customtkinter==5.0.5
+PILLow==9.4.0
