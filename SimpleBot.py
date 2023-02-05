@@ -37,7 +37,8 @@ async def on_ready():
     if cursor.fetchall() == []:
         for guild in bot.guilds:
             for member in guild.members:
-                cursor.execute(f"INSERT INTO users VALUES('{member.id}', '{member.name}', 0, 0);")
+
+                cursor.execute(f"INSERT OR IGNORE INTO users VALUES('{member.id}', '{member.name}', 0, 0);")
                 data.commit()
     data.close()
 
@@ -47,7 +48,7 @@ async def sync(ctx) -> None:
     await ctx.send(f"synced {len(fmt)}")
 
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
-print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по МСК",
+print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
                                                             time.localtime()) + Fore.WHITE + Style.BRIGHT)
 print(prfx + '|---> Daniil bot <----|')
 print('|---------------------|')
