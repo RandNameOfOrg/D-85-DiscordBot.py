@@ -1,34 +1,49 @@
-from __future__ import print_function
-import discord, App
+import discord, configparser
 from discord.ext import commands
-from cogs.file.config import VERSION, NAME
+from cogs.file.config import *
+from discord.ui import View, Select
 
-from discord import app_commands
+class HelpSelect(Select):
+    def __init__(self, bot: commands.Bot):
+        conig = configparser.ConfigParser()
+        conig.read('../config.ini')
+        super().__init__(placeholder='категории бота ' + config['Settings']['Name'], options=[discord.SelectOption(
+                                label=cog_name, description=cog.__doc__
+                            ) for cog_name, cog in bot.cogs.items() if cog.__cog_commands__ and cog_name not in ['Com']
+                         ])
+        self.bot=bot
 
+    async def callback(self, interaction: discord.Interaction) -> None:
+        cog=self.bot.get_cog(self.values[0])
+        assert cog
+
+        com_mix=[]
+        for i in cog.walk_commands():
+            com_mix.append(i)
+
+        for i in cog.walk_app_commands():
+            com_mix.append(i)
+
+        embed = discord.Embed(
+            title=f'Команда {cog.__cog_name__}',
+            description='\n'.join(f"**{command.name}**: `{command.description if command.description !=None else 'None'}`\n" for command in com_mix)
+        )
+        await interaction.response.send_message(embed=embed)
 
 class Help(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
         self.value = [NAME, VERSION]
-        self.bot.tree.sync()
         bot.remove_command('help')
 
-        self.helpembed = discord.Embed(title=f"{self.value[0]} v{self.value[1]}", color=0x4441d9)
-        self.helpembed.add_field(name="cat", value="gif с котом", inline=False)
-        self.helpembed.add_field(name="dog", value="gif с собакой", inline=False)
-        self.helpembed.add_field(name="date", value="выводит дату", inline=False)
-        self.helpembed.add_field(name="/report", value="жалоба на участника | !report @test", inline=False)
-        self.helpembed.add_field(name="smile", value="эмодзи это-го сервера", inline=False)
-        self.helpembed.add_field(name="vote", value="голосование (принять,отклонить) *НЕ РАБОТАЕТ*", inline=False)
-        self.helpembed.add_field(name="test_command", value="новые команды (самые новые)", inline=False)
-        self.helpembed.add_field(name="ctk", value=" | !ctk (message)", inline=False)
-        self.helpembed.set_footer(text=self.value[0])
-        self.helpembed.set_author(name="by daniil6678#9902")
+    @commands.command(description='sync help')
+    async def sync_help(self, ctx):
+        await self.bot.tree.sync()
 
-    @commands.hybrid_command(name="help", with_app_command=True)
+    @commands.hybrid_command(name="help", description='Все команды бота', with_app_command=True)
     async def help(self, ctx):
-        await ctx.send(embed=self.helpembed)
-
+        embed=discord.Embed(title='Help command', description='Help')
+        await ctx.send(embed=embed, view=View().add_item(HelpSelect(self.bot)))
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Help(bot))

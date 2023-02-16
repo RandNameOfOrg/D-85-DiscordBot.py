@@ -7,28 +7,39 @@ from discord import app_commands
 voteIdTexts = {}
 
 
-
 class slash(commands.Cog):
-    def __init__(self, bot: commands.bot):
+    def __init__(self, bot: commands.bot) -> None:
         self.bot = bot
+        self.c_menu = app_commands.ContextMenu(name="test", callback=self.test_)
+        self.bot.tree.add_command(self.c_menu)
+
         self.bot.tree.sync()
+
+
+    async def test_(self, interaction: discord.Interaction, message: discord.Message):
+        await interaction.user.create_dm().send('Wow, you usage new command')
+        await interaction.response.send('OK')
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")
     async def report(self, Interaction: discord.Interaction, member: discord.Member):
-        data = sqlite3.connect('users.db')
-        cursor = data.cursor()
-        message = Interaction.response
-        cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}")
-        db_data = cursor.fetchone()[0]
-        cursor.execute(f"UPDATE users SET warns = {db_data + 1} WHERE id = {member.id}")
-        data.commit()
-        data.close()
-        if db_data + 1 >= 5:
-            await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
-                                                           description=f"У {member.name} уже {db_data + 1} Жалоб!!!",
-                                                           colour=discord.Color.red()))
+        if self.config['Status']['dog'] == 'On':
+            data = sqlite3.connect('users.db')
+            cursor = data.cursor()
+            message = Interaction.response
+            db_userWarns = cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}").fetchone()[0]
+            cursor.execute(f"UPDATE users SET warns = {db_userWarns + 1} WHERE id = {member.id}")
+            data.commit()
+            data.close()
+            if db_userWarns + 1 >= 5:
+                await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
+                                                               description=f"У {member.name} уже {db_userWarns + 1} Жалоб!!!",
+                                                               colour=discord.Color.red()))
+            else:
+                await message.send_message('Жалоба отправлена')
         else:
-            await message.send_message('Жалоба отправлена')
+            await Interaction.response.send_message('command is blocked')
+
+
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
     async def unreport(self, Interaction: discord.Interaction, member: discord.Member, number: int = 1):

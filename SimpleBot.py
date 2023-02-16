@@ -1,14 +1,10 @@
-from __future__ import print_function
-import os.path, time
-
 from discord.ext import commands
-import os, discord, asyncio
 from cogs.file import config
-import sqlite3
 from colorama import Back, Fore, Style
+import os, discord, asyncio, os.path, time, sqlite3, logging, configparser
 
-s = sqlite3.connect('users.db')
-s.close()
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 data = sqlite3.connect('users.db')
 cursor = data.cursor()
@@ -21,11 +17,11 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users(
 data.commit()
 data.close()
 
-#logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 profiles = os.path.abspath(__file__)[:-12] + "cogs\\"
 intents = discord.Intents.all()
 intents.members = True
-bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=config.APP_ID, shards=2)
+bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=config['Settings']['APP_ID'], shards=2)
 voteIdTexts = {}
 
 
@@ -42,17 +38,13 @@ async def on_ready():
                 data.commit()
     data.close()
 
-@bot.command()
-async def sync(ctx) -> None:
-    fmt = await bot.tree.sync(guild=ctx.guild)
-    await ctx.send(f"synced {len(fmt)}")
 
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
                                                             time.localtime()) + Fore.WHITE + Style.BRIGHT)
 print(prfx + '|---> Daniil bot <----|')
 print('|---------------------|')
-print(f'|--->version: {config.VERSION}<--|')
+print(f'|--->version: {config["Settings"]["VERSION"]}<--|')
 print('|---) Bot starting (--|')
 
 
@@ -60,6 +52,7 @@ async def main():
     for f in os.listdir("./cogs"):
         if f.endswith(".py"):
             await bot.load_extension("cogs." + f[:-3])
-    await bot.start(config.TOKEN)
+    token = config['Settings']['TOKEN']
+    await bot.start(token)
 if __name__ == "__main__":
     asyncio.run(main())
