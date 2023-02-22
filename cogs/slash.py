@@ -10,15 +10,7 @@ voteIdTexts = {}
 class slash(commands.Cog):
     def __init__(self, bot: commands.bot) -> None:
         self.bot = bot
-        self.c_menu = app_commands.ContextMenu(name="test", callback=self.test_)
-        self.bot.tree.add_command(self.c_menu)
 
-        self.bot.tree.sync()
-
-
-    async def test_(self, interaction: discord.Interaction, message: discord.Message):
-        await interaction.user.create_dm().send('Wow, you usage new command')
-        await interaction.response.send('OK')
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")
     async def report(self, Interaction: discord.Interaction, member: discord.Member):
@@ -40,6 +32,9 @@ class slash(commands.Cog):
             await Interaction.response.send_message('command is blocked')
 
 
+    @commands.command(description='sync slash (file)')
+    async def sync_slash(self, ctx):
+        await self.bot.tree.sync()
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
     async def unreport(self, Interaction: discord.Interaction, member: discord.Member, number: int = 1):

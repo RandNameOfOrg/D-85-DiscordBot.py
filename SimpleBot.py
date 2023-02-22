@@ -1,5 +1,4 @@
 from discord.ext import commands
-from cogs.file import config
 from colorama import Back, Fore, Style
 import os, discord, asyncio, os.path, time, sqlite3, logging, configparser
 

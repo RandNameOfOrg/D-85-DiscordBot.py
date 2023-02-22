@@ -1,6 +1,5 @@
 import discord, configparser
 from discord.ext import commands
-from cogs.file.config import *
 from discord.ui import View, Select
 
 class HelpSelect(Select):
@@ -33,7 +32,6 @@ class HelpSelect(Select):
 class Help(commands.Cog):
     def __init__(self, bot: commands.bot):
         self.bot = bot
-        self.value = [NAME, VERSION]
         bot.remove_command('help')
 
     @commands.command(description='sync help')
