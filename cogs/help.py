@@ -4,8 +4,8 @@ from discord.ui import View, Select
 
 class HelpSelect(Select):
     def __init__(self, bot: commands.Bot):
-        conig = configparser.ConfigParser()
-        conig.read('../config.ini')
+        config = configparser.ConfigParser()
+        config.read('../config.ini')
         super().__init__(placeholder='категории бота ' + config['Settings']['Name'], options=[discord.SelectOption(
                                 label=cog_name, description=cog.__doc__
                             ) for cog_name, cog in bot.cogs.items() if cog.__cog_commands__ and cog_name not in ['Com']

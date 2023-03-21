@@ -41,7 +41,7 @@ async def on_ready():
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
                                                             time.localtime()) + Fore.WHITE + Style.BRIGHT)
-print(prfx + '|---> Daniil bot <----|')
+print(prfx + f'|---> {config["Settings"]["NAME"]} <----|')
 print('|---------------------|')
 print(f'|--->version: {config["Settings"]["VERSION"]}<--|')
 print('|---) Bot starting (--|')
