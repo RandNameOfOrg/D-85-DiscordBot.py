@@ -3,10 +3,8 @@ from discord.ext import commands
 from discord.ui import View, Select
 
 class HelpSelect(Select):
-    def __init__(self, bot: commands.Bot):
-        config = configparser.ConfigParser()
-        config.read('../config.ini')
-        super().__init__(placeholder='категории бота ' + config['Settings']['Name'], options=[discord.SelectOption(
+    def __init__(self, bot: commands.Bot, name:str):
+        super().__init__(placeholder=name, options=[discord.SelectOption(
                                 label=cog_name, description=cog.__doc__
                             ) for cog_name, cog in bot.cogs.items() if cog.__cog_commands__ and cog_name not in ['Com']
                          ])
@@ -41,7 +39,9 @@ class Help(commands.Cog):
     @commands.hybrid_command(name="help", description='Все команды бота', with_app_command=True)
     async def help(self, ctx):
         embed=discord.Embed(title='Help command', description='Help')
-        await ctx.send(embed=embed, view=View().add_item(HelpSelect(self.bot)))
+        config = configparser.ConfigParser()
+        config.read('../config.ini')
+        await ctx.send(embed=embed, view=View().add_item(HelpSelect(self.bot, 'категории бота '))) #  + config['Settings']['Name']
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Help(bot))

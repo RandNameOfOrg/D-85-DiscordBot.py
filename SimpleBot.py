@@ -16,7 +16,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users(
 data.commit()
 data.close()
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO) #debag log
 profiles = os.path.abspath(__file__)[:-12] + "cogs\\"
 intents = discord.Intents.all()
 intents.members = True
@@ -34,15 +34,16 @@ async def on_ready():
             for member in guild.members:
 
                 cursor.execute(f"INSERT OR IGNORE INTO users VALUES('{member.id}', '{member.name}', 0, 0);")
+
                 data.commit()
     data.close()
-
-
+name = config["Settings"]["NAME"]
+data = (23-len(name))//2-2
 prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
                                                             time.localtime()) + Fore.WHITE + Style.BRIGHT)
-print(prfx + f'|---> {config["Settings"]["NAME"]} <----|')
-print('|---------------------|')
+print(prfx + '|'+'-'*data+f'> {name} <'+'-'*(data-1)+'|')
+print('|'+'-'*21+'|')
 print(f'|--->version: {config["Settings"]["VERSION"]}<--|')
 print('|---) Bot starting (--|')
 

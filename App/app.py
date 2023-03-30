@@ -1,7 +1,6 @@
 import sqlite3, configparser, os
 import tkinter, tkinter.messagebox
 import customtkinter as CTk
-from PIL import Image
 
 class Status(CTk.CTkFrame):
     def __init__(self, *args, header_name="command", **kwargs):
