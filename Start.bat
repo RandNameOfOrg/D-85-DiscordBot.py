@@ -1,19 +1,19 @@
 ::[Bat To Exe Converter]
 ::
-::YAwzoRdxOk+EWAnk
+::YAwzoRdxOk+EWAjk
 ::fBw5plQjdG8=
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
 ::cxAkpRVqdFKZSzk=
-::cBs/ulQjdF+5
+::cBs/ulQjdF65
 ::ZR41oxFsdFKZSDk=
 ::eBoioBt6dFKZSDk=
 ::cRo6pxp7LAbNWATEpCI=
-::egkzugNsPRvcWATEpCI=
+::egkzugNsPRvcWATEpSI=
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
-::YxY4rhs+aU+IeA==
+::YxY4rhs+aU+JeA==
 ::cxY6rQJ7JhzQF1fEqQJgZksaHErRXA==
 ::ZQ05rAF9IBncCkqN+0xwdVsEAlTMbSXqZg==
 ::ZQ05rAF9IAHYFVzEqQIDIRZEQAGgM3/a
@@ -33,4 +33,3 @@
 ::978f952a14a936cc963da21a135fa983
 @echo off 
 python SimpleBot.py
-pause

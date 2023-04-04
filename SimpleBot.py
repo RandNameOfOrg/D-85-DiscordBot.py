@@ -16,12 +16,10 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users(
 data.commit()
 data.close()
 
-#logging.basicConfig(level=logging.INFO) #debag log
-profiles = os.path.abspath(__file__)[:-12] + "cogs\\"
+#logging.basicConfig(level=logging.INFO) #logging
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix='!', intents=intents, aplication_id=config['Settings']['APP_ID'], shards=2)
-voteIdTexts = {}
 
 
 @bot.event
@@ -37,12 +35,12 @@ async def on_ready():
 
                 data.commit()
     data.close()
+    print(Fore.LIGHTGREEN_EX + f"Bot Started as {bot.user} (ID: {bot.user.id}) in "+time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}"))
 name = config["Settings"]["NAME"]
 data = (23-len(name))//2-2
-prfx = Fore.LIGHTGREEN_EX + Style.BRIGHT
 print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
                                                             time.localtime()) + Fore.WHITE + Style.BRIGHT)
-print(prfx + '|'+'-'*data+f'> {name} <'+'-'*(data-1)+'|')
+print(Fore.LIGHTYELLOW_EX + '|'+'-'*data+Fore.LIGHTGREEN_EX+f'> {name} <'+Fore.LIGHTYELLOW_EX+'-'*(data-1)+'|')
 print('|'+'-'*21+'|')
 print(f'|--->version: {config["Settings"]["VERSION"]}<--|')
 print('|---) Bot starting (--|')

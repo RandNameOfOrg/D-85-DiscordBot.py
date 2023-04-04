@@ -4,7 +4,12 @@ from discord.ext import commands
 from discord.utils import get
 from discord.ui import Button, View
 import os, discord, datetime, configparser
-import App
+#import App #Disabled
+
+__all__ = (
+    "Code",
+    "setup",
+)
 
 class Vote_(discord.ui.View):
     def __init__(self, title: str):
@@ -54,16 +59,16 @@ class Code(commands.Cog):
     async def test_command(self, ctx: commands.Context):
         await ctx.reply("скоро все команды станут такими")
 
-    @commands.command(description='None') #name='ctk', with_app_command=True
-    async def ctk(self, ctx, *message):
-        if self.config['Status']['ctk'] == 'On':
-            text = ''
-            for i in message:
-                text = text + ' ' + i
-            # await ctx.send_message(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
-            await ctx.reply(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
-        else:
-            await self.block(ctx)
+    # @commands.command(description='None') #name='ctk', with_app_command=True ### Off
+    # async def ctk(self, ctx, *message):
+    #     if self.config['Status']['ctk'] == 'On':
+    #         text = ''
+    #         for i in message:
+    #             text = text + ' ' + i
+    #         # await ctx.send_message(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
+    #         await ctx.reply(App.open_dialog(title_="Запрос", text_=f'Что ответить на {text}'))
+    #     else:
+    #         await self.block(ctx)
 
 
     @commands.hybrid_command(name='cat', description='Мем', with_app_command=True)
