@@ -1,5 +1,6 @@
 import os.path
-
+from . import Plugin
+from core import Bot
 from discord.ext import commands
 from discord.utils import get
 from discord.ui import Button, View
@@ -7,7 +8,7 @@ import os, discord, datetime, configparser
 #import App #Disabled
 
 __all__ = (
-    "Code",
+    "Main",
     "setup",
 )
 
@@ -24,8 +25,8 @@ class Vote_(discord.ui.View):
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message(f'{interaction.user} отказался от {self.title}')
 
-class Code(commands.Cog):
-    def __init__(self, bot: commands.bot):
+class Main(Plugin):
+    def __init__(self, bot: Bot):
         self.bot = bot
         self.profiles = os.path.abspath(__file__)[:-13] + "cogs\\"
         self.config = configparser.ConfigParser()
@@ -37,11 +38,6 @@ class Code(commands.Cog):
     @commands.command(description='sync code')
     async def sync_code(self, ctx):
         await self.bot.tree.sync()
-    @commands.hybrid_command(name='clear', description='удаляют выбранное кол-во сообщений', with_app_command=True)
-    @commands.has_permissions(manage_messages=True)
-    async def clear(self, ctx, amout: int):
-        await ctx.channel.purge(limit=(amout))
-        await ctx.send(f'Done({amout})')
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -57,7 +53,7 @@ class Code(commands.Cog):
 
     @commands.hybrid_command(name='test_command', description='Открый Бета-Тест', with_app_command=True)
     async def test_command(self, ctx: commands.Context):
-        await ctx.reply("скоро все команды станут такими")
+        await ctx.reply("nothing")
 
     # @commands.command(description='None') #name='ctk', with_app_command=True ### Off
     # async def ctk(self, ctx, *message):
@@ -93,11 +89,6 @@ class Code(commands.Cog):
         else:
             await self.block(ctx)
 
-    @commands.hybrid_command(name='kick', description='Кикает пользователя', with_app_command=True)
-    @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
-        await member.kick(reason=reason)
-
     @commands.hybrid_command(name='vote', description='Голосование', with_app_command=True)
     async def vote(self, ctx, *, title):
         if self.config['Status']['dog'] == 'On':
@@ -106,5 +97,5 @@ class Code(commands.Cog):
             await self.block(ctx)
 
 
-async def setup(bot: commands.Bot):
-    await bot.add_cog(Code(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Main(bot))

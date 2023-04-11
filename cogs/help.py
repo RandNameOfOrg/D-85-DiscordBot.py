@@ -1,6 +1,10 @@
 import discord, configparser
 from discord.ext import commands
 from discord.ui import View, Select
+from core import Bot
+from . import Plugin
+
+__all__=("Help",)
 
 class HelpSelect(Select):
     def __init__(self, bot: commands.Bot, name:str):
@@ -27,8 +31,8 @@ class HelpSelect(Select):
         )
         await interaction.response.send_message(embed=embed)
 
-class Help(commands.Cog):
-    def __init__(self, bot: commands.bot):
+class Help(Plugin):
+    def __init__(self, bot: Bot):
         self.bot = bot
         bot.remove_command('help')
 
@@ -43,5 +47,5 @@ class Help(commands.Cog):
         config.read('../config.ini')
         await ctx.send(embed=embed, view=View().add_item(HelpSelect(self.bot, 'категории бота '))) #  + config['Settings']['Name']
 
-async def setup(bot: commands.Bot):
+async def setup(bot: Bot):
     await bot.add_cog(Help(bot))

@@ -1,5 +1,6 @@
 from __future__ import print_function
-
+from . import Plugin
+from core import Bot
 import discord, sqlite3
 from discord.ext import commands
 from discord import app_commands
@@ -7,8 +8,8 @@ from discord import app_commands
 voteIdTexts = {}
 
 
-class slash(commands.Cog):
-    def __init__(self, bot: commands.bot) -> None:
+class AppCommands(Plugin):
+    def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
 
@@ -68,5 +69,5 @@ class slash(commands.Cog):
     # ])
 
 
-async def setup(bot: commands.Bot):
-    await bot.add_cog(slash(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(AppCommands(bot))

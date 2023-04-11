@@ -1,9 +1,10 @@
 from typing import Optional
 from discord.ext import commands
-import discord, configparser, sqlite3
+import discord, configparser, sqlite3, os, time
 from colorama import Fore
-import os
-from logging import getLogger; log = getLogger("Bot")
+from .embed import Embed
+from logging import getLogger, basicConfig; log = getLogger("Bot")
+basicConfig(level="INFO")
 
 __all__ = (
     "Bot",
@@ -14,7 +15,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
-class Bot(commands.Bot):
+class Bot(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(command_prefix='!', intents=intents,
                          aplication_id=config['Settings']['APP_ID'],
@@ -26,24 +27,37 @@ class Bot(commands.Bot):
                 if not f.startswith("_"):
                     await self.load_extension("cogs." + f[:-3]) # + ".plugin")
 
-    async def on_ready(self):
-        print(Fore.LIGHTGREEN_EX + f"Bot Started as {self.user} (ID: {self.user.id}) in " + time.strftime(
+    async def on_ready(self) -> None:
+        print(Fore.LIGHTWHITE_EX+f"Bot Started as {self.user}")
+        log.info(f"Started as {self.user} (ID: {self.user.id}) in " + time.strftime(
             f"%H:%M:%S {Fore.LIGHTWHITE_EX}"))
 
-    def success(self, content:str, interaction: discord.Interaction, ephemeral: Optional[bool]):
+    async def success(self, content:str, interaction: discord.Interaction, *, ephemeral: Optional[bool]=False, embed:Optional[bool]=True) -> Optional[discord.WebhookMessage]:
         """Send a success message"""
-        pass
+        if embed:
+            if interaction.response.is_done():
+                return await interaction.followup.send(embed=Embed(description=content, color=discord.Colour.green()), ephemeral=ephemeral)
+            return await interaction.response.send_message(embed=Embed(description=content, color=discord.Colour.green()), ephemeral=ephemeral)
+        else:
+            if interaction.response.is_done():
+                if interaction.response.is_done():
+                    return await interaction.followup.send(content=f"[☑]{content}", ephemeral=ephemeral)
+                    return await interaction.response.send_message(content=f"[☑]{content}", ephemeral=ephemeral)
 
-    def error(self, content:str, interaction: discord.Interaction, ephemeral: Optional[bool]):
+
+
+    async def error(self, content:str, interaction: discord.Interaction, *, ephemeral: Optional[bool]=True, embed:Optional[bool]=True) -> Optional[discord.WebhookMessage]:
         """Send a error message"""
-        pass
+        if embed:
+            if interaction.response.is_done():
+                return await interaction.followup.send(embed=Embed(description=content, color=discord.Colour.red()),
+                                                       ephemeral=ephemeral)
+            return await interaction.response.send_message(embed=Embed(description=content, color=discord.Colour.red()),
+                                                           ephemeral=ephemeral)
+        else:
+            if interaction.response.is_done():
+                if interaction.response.is_done():
+                    return await interaction.followup.send(content=f"[❌]{content}", ephemeral=ephemeral)
+                    return await interaction.response.send_message(content=f"[❌]{content}", ephemeral=ephemeral)
 
-    def sql_connect(self):
-        with sqlite3.connect('../users.db') as data:
-            cursor = data.cursor()
-            cursor.execute("SELECT * FROM users")
-            if cursor.fetchall() == []:
-                for guild in self.guilds:
-                    for member in guild.members:
-                        cursor.execute(f"INSERT OR IGNORE INTO users VALUES('{member.id}', '{member.name}', 0, 0);")
-                        data.commit()
+

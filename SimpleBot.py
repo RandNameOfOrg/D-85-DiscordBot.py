@@ -1,20 +1,12 @@
 from discord.ext import commands
 from colorama import Back, Fore, Style
-import os, discord, asyncio, os.path, time, sqlite3, logging, configparser
+from core import Sqlite as sql
+import os, discord, asyncio, os.path, time, logging, configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-data = sqlite3.connect('users.db')
-cursor = data.cursor()
-cursor.execute("""CREATE TABLE IF NOT EXISTS users(
-    id INT UNIQUE,
-    discord_name TEXT,
-    rang INT DEFAULT 0,
-    warns INT DEFAULT 0
-)""")
-data.commit()
-data.close()
+Sqlite()
 
 #logging.basicConfig(level=logging.INFO) #logging
 intents = discord.Intents.all()

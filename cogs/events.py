@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands, tasks
 from contextlib import asynccontextmanager
+from core import Bot
+from . import Plugin
 
 
-class Com(commands.Cog):
-    def __init__(self, bot: commands.bot):
+class Events(Plugin):
+    def __init__(self, bot: Bot):
         self.bot = bot
         self.ffile = 'E:\\Программа\\pythonProject1\\cogs\\file'
         # self.change_presence.start()
@@ -64,5 +66,5 @@ class Com(commands.Cog):
             f"Наказание: Бан")
 
 
-async def setup(bot: commands.Bot):
-    await bot.add_cog(Com(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Events(bot))

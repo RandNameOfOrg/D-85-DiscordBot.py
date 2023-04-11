@@ -9,4 +9,4 @@ class Plugin(Cog):
         super().__init__()
 
     async def cog_load(self) -> None:
-        log.info(f'Loaded {self.qualifed_name} cog. ')
+        log.info(f'Loaded {self.__class__.__name__} cog. ')
