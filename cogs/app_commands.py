@@ -12,36 +12,31 @@ class AppCommands(Plugin):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-
     @app_commands.command(name="report", description="пожаловаться на пользователя")
-    async def report(self, Interaction: discord.Interaction, member: discord.Member):
-        if self.config['Status']['dog'] == 'On':
-            data = sqlite3.connect('users.db')
-            cursor = data.cursor()
-            message = Interaction.response
-            db_userWarns = cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}").fetchone()[0]
-            cursor.execute(f"UPDATE users SET warns = {db_userWarns + 1} WHERE id = {member.id}")
-            data.commit()
-            data.close()
-            if db_userWarns + 1 >= 5:
-                await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
-                                                               description=f"У {member.name} уже {db_userWarns + 1} Жалоб!!!",
-                                                               colour=discord.Color.red()))
-            else:
-                await message.send_message('Жалоба отправлена')
+    async def report(self, interaction: discord.Interaction, member: discord.Member):
+        data = sqlite3.connect('users.db')
+        cursor = data.cursor()
+        message = interaction.response
+        db_user_warns = cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}").fetchone()[0]
+        cursor.execute(f"UPDATE users SET warns = {db_user_warns + 1} WHERE id = {member.id}")
+        data.commit()
+        data.close()
+        if db_user_warns + 1 >= 5:
+            await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
+                                                           description=f"У {member.name} уже {db_user_warns + 1} Жалоб!!!",
+                                                           colour=discord.Color.red()))
         else:
-            await Interaction.response.send_message('command is blocked')
+            await message.send_message('Жалоба отправлена')
 
-
-    @commands.command(description='sync slash (file)')
-    async def sync_slash(self, ctx):
+    @commands.command(name='sync2', description='sync slash (file)')
+    async def sync_2(self, ctx):
         await self.bot.tree.sync()
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
-    async def unreport(self, Interaction: discord.Interaction, member: discord.Member, number: int = 1):
+    async def unreport(self, interaction: discord.Interaction, member: discord.Member, number: int = 1):
         data = sqlite3.connect('users.db')
         cursor = data.cursor()
-        message = Interaction.response
+        message = interaction.response
         cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}")
         db_data = cursor.fetchone()[0]
         cursor.execute(f"SELECT rang FROM users WHERE id = {member.id}")

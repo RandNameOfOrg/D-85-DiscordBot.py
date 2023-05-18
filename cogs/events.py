@@ -1,6 +1,5 @@
 import discord
-from discord.ext import commands, tasks
-from contextlib import asynccontextmanager
+from discord.ext import commands  # , tasks
 from core import Bot
 from . import Plugin
 
@@ -8,7 +7,6 @@ from . import Plugin
 class Events(Plugin):
     def __init__(self, bot: Bot):
         self.bot = bot
-        self.ffile = 'E:\\Программа\\pythonProject1\\cogs\\file'
         # self.change_presence.start()
 
     # @tasks.loop(minutes=10.0)
@@ -23,7 +21,7 @@ class Events(Plugin):
 
     @commands.command()
     async def python_skeleton(self, ctx):
-        await ctx.channel.purge(limit=1);
+        await ctx.channel.purge(limit=1)
         await ctx.send(f"*Пасхалка обнаружена* \n"
                        f" ░░░░▐▀█▀▌░░░░▀█▄░░░ \n"
                        f"░░░░░▐█▄█▌░░░░░░▀█▄░░ \n"

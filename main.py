@@ -1,23 +1,28 @@
-#!"D:\Program Files\Python\Python311\python.exe"
-from colorama import Back, Fore, Style
+"""Start the D-85 bot in discord"""
+from colorama import Fore, Style
 from core import Bot
-import time, asyncio, discord, sqlite3, configparser;config = configparser.ConfigParser()
+from time import strftime, localtime
+from asyncio import run
+from configparser import ConfigParser
+from pathlib import Path
+from prettytable import PrettyTable
 
+config = ConfigParser()
+config.read(Path(__file__).parent.absolute() / "config.ini")
+cfg = config.get
 
-config.read('config.ini')
 
 def start_print():
     """print a start message"""
-    name = config["Settings"]["NAME"]
-    print(Fore.LIGHTBLUE_EX + "Начало загрузки бота в " + Fore.GREEN + time.strftime(
-        f"%H:%M:%S {Fore.LIGHTWHITE_EX}по локальному времени",
-        time.localtime()) + Fore.WHITE + Style.BRIGHT)
-    print(Fore.LIGHTYELLOW_EX + '|' + '-' * (
-                (23 - len(name)) // 2 - 2) + Fore.GREEN + f'> {name} <' + Fore.LIGHTYELLOW_EX + '-' * (
-                  ((23 - len(name)) // 2 - 2) - 1) + '|')
-    print('|' + '-' * 21 + '|')
-    print(f'|--->version: {config["Settings"]["VERSION"]}<--|')
-    print('|---) Bot starting (--|')
+    global cfg
+    tbl = PrettyTable()
+    tbl.field_names = ["Название", "Значение"]
+    tbl.add_row(["Имя", f'{cfg("Settings", "NAME")}'])
+    tbl.add_row(['Версия', f'{cfg("Settings", "VERSION")}'])
+    tbl.add_row(["Начало загрузки", strftime("%H:%M:%S", localtime())])
+    print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
+    print(tbl)
+
 
 async def main():
     """main function"""
@@ -27,5 +32,6 @@ async def main():
         token = config['Settings']['TOKEN']
         await bot.start(token, reconnect=True)
 
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    run(main())
