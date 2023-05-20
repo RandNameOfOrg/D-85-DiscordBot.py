@@ -1,6 +1,7 @@
 """Start the D-85 bot in discord"""
 from colorama import Fore, Style
-from core import Bot
+from core import Bot, sqlite
+from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
 from time import strftime, localtime
 from asyncio import run
 from configparser import ConfigParser
@@ -8,16 +9,19 @@ from pathlib import Path
 from prettytable import PrettyTable
 
 config = ConfigParser()
-config.read(Path(__file__).parent.absolute() / "config.ini")
+config.read(PATH_TO_CONFIG)
 cfg = config.get
+
+if not PATH_TO_SQLITE.exists():
+    sql = sqlite(PATH_TO_SQLITE)
+    sql.create_table()
 
 
 def start_print():
     """print a start message"""
     global cfg
     tbl = PrettyTable()
-    tbl.field_names = ["Название", "Значение"]
-    tbl.add_row(["Имя", f'{cfg("Settings", "NAME")}'])
+    tbl.field_names = ["Имя", f'{cfg("Settings", "NAME")}']
     tbl.add_row(['Версия', f'{cfg("Settings", "VERSION")}'])
     tbl.add_row(["Начало загрузки", strftime("%H:%M:%S", localtime())])
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")

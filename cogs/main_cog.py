@@ -8,6 +8,7 @@ from discord.ext import commands
 from core import Bot, Embed
 from core.data import PATH_TO_CONFIG
 from . import Plugin
+import asyncio
 
 # import functools, typing, asyncio
 # import App #Disabled
@@ -18,7 +19,7 @@ __all__ = (
 )
 
 
-class Vote_(discord.ui.View):
+class Vote_c(discord.ui.View):
     def __init__(self, title: str):
         super().__init__()
         self.title = title
@@ -51,6 +52,8 @@ class Main(Plugin):
         self.profiles = os.path.abspath(__file__)[:-13] + "cogs\\"
         self.config = configparser.ConfigParser()
         self.config.read(PATH_TO_CONFIG)
+        loop = asyncio.get_running_loop()
+        loop.create_task(self.sync_code())
 
     # def to_thread(func: typing.Callable) -> typing.Coroutine:
     #     @functools.wraps(func)
@@ -64,8 +67,7 @@ class Main(Plugin):
     #     time.sleep(time)
     #     msgId.edit(*args, **kwargs)
 
-    @commands.command(description='sync code')
-    async def sync_code(self, ctx):
+    async def sync_code(self):
         await self.bot.tree.sync()
 
     @commands.Cog.listener()
@@ -113,7 +115,7 @@ class Main(Plugin):
 
     @commands.hybrid_command(name='vote', description='Голосование', with_app_command=True)
     async def vote(self, ctx, *, title):  # , timeout: int = 600):
-        view = Vote_(title)
+        view = Vote_c(title)
         embed = Embed(title=title)
         embed.set_author(name=ctx.author.name)
         message = await ctx.send(embed=embed, view=view)

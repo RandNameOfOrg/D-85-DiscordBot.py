@@ -1,14 +1,15 @@
 import discord, configparser
 from discord.ext import commands
 from discord.ui import View, Select
+from discord import app_commands
 from core import Bot
 from core.data import PATH_TO_CONFIG
 from . import Plugin
+import asyncio
 
 __all__ = ("Help",)
 
 
-# region HelpSelect class
 class HelpSelect(Select):
     def __init__(self, bot: commands.Bot, name: str):
         super().__init__(placeholder=name, options=[discord.SelectOption(
@@ -38,18 +39,17 @@ class HelpSelect(Select):
         await interaction.response.send_message(embed=embed)
 
 
-# endregion
-
 class Help(Plugin):
     def __init__(self, bot: Bot):
         self.bot = bot
         bot.remove_command('help')
+        loop = asyncio.get_running_loop()
+        loop.create_task(self.sync_help())
 
-    @commands.command(description='sync help')
-    async def sync_help(self, ctx):
+    async def sync_help(self):
         await self.bot.tree.sync()
 
-    @commands.hybrid_command(name="help", description='Все команды бота', with_app_command=True)
+    @commands.command()
     async def help(self, ctx):
         embed = discord.Embed(title='Help command', description='Help')
         config = configparser.ConfigParser()
@@ -57,6 +57,18 @@ class Help(Plugin):
         await ctx.send(embed=embed,
                        view=View().add_item(
                            HelpSelect(self.bot, 'категории бота {}'.format(config.get("Settings", "NAME")))))
+
+    @app_commands.command(name="help", description='Все команды бота')
+    async def help1(self, interaction: discord.Interaction):
+        embed = discord.Embed(title='Help command', description='Help')
+        config = configparser.ConfigParser()
+        config.read(PATH_TO_CONFIG)
+        await interaction.response.send_message(embed=embed,
+                                                view=View().add_item(
+                                                    HelpSelect(self.bot,
+                                                               'категории бота {}'.format(
+                                                                   config.get("Settings", "NAME")))),
+                                                ephermal=True)
 
 
 async def setup(bot: Bot):

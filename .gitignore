@@ -156,3 +156,4 @@ cython_debug/
 /users.db
 /Testt/
 /App/
+/cogs/events.py

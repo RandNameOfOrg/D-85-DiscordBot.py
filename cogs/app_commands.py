@@ -2,15 +2,19 @@ from __future__ import print_function
 from . import Plugin
 from core import Bot
 import discord, sqlite3
-from discord.ext import commands
+# from discord.ext import commands
 from discord import app_commands
-
-voteIdTexts = {}
+import asyncio
 
 
 class AppCommands(Plugin):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
+        loop = asyncio.get_running_loop()
+        loop.create_task(self.sync_2())
+
+    async def sync_2(self):
+        await self.bot.tree.sync()
 
     @app_commands.command(name="report", description="пожаловаться на пользователя")
     async def report(self, interaction: discord.Interaction, member: discord.Member):
@@ -22,15 +26,11 @@ class AppCommands(Plugin):
         data.commit()
         data.close()
         if db_user_warns + 1 >= 5:
-            await message.send_message(embed=discord.Embed(title="❗❗📣ВНИМАНИЕ📣❗❗",
+            await message.send_message(embed=discord.Embed(title="📣 Жалоба",
                                                            description=f"У {member.name} уже {db_user_warns + 1} Жалоб!!!",
                                                            colour=discord.Color.red()))
         else:
-            await message.send_message('Жалоба отправлена')
-
-    @commands.command(name='sync2', description='sync slash (file)')
-    async def sync_2(self, ctx):
-        await self.bot.tree.sync()
+            await message.send_message('Жалоба отправлена', ephemeral=True)
 
     @app_commands.command(name="unreport", description="убирает репорты с пользователя")
     async def unreport(self, interaction: discord.Interaction, member: discord.Member, number: int = 1):
