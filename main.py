@@ -8,7 +8,7 @@ from pathlib import Path
 
 from colorama import Fore, Style
 from prettytable import PrettyTable
-from update_check.main import checkForUpdates
+from update__check import check_for_updates
 
 from core import Bot, sqlite
 from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
