@@ -50,7 +50,7 @@ def update_and_run():
                     (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
     __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
-        checkForUpdates(path, url)
+        check_for_updates(path, url)
     run(_main())
 
 
