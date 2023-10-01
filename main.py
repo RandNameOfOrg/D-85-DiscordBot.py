@@ -20,7 +20,6 @@ debug = cfg("Settings", "DEBUG")
 
 if debug:
     import dotenv
-
     dotenv.load_dotenv()
 
 if not PATH_TO_SQLITE.exists():
