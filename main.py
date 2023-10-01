@@ -20,7 +20,6 @@ debug = cfg("Settings", "DEBUG")
 
 if debug:
     import dotenv
-
     dotenv.load_dotenv()
 
 if not PATH_TO_SQLITE.exists():
@@ -54,7 +53,9 @@ def update_and_run():
         if check_for_updates(path, url):
             updated = True
     if updated:
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
+        print("Обновление успешно завершено! Перезапустите программу")
+        exit(1)
     run(_main())
 
 
