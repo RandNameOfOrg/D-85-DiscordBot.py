@@ -12,7 +12,7 @@ import os
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
-debug = False
+debug = cfg("Settings", "DEBUG")
 
 if debug:
     import dotenv
