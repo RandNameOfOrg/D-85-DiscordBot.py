@@ -1,13 +1,17 @@
 """Start the D-85 bot in discord"""
+import os
+import sys
 from asyncio import run
-from colorama import Fore, Style
-from core import Bot, sqlite
-from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
 from configparser import ConfigParser
 from time import strftime, localtime
+from pathlib import Path
+
+from colorama import Fore, Style
 from prettytable import PrettyTable
 from update_check.main import checkForUpdates
-import os
+
+from core import Bot, sqlite
+from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
 
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
@@ -27,9 +31,10 @@ if not PATH_TO_SQLITE.exists():
 def start_print():
     """print a start message"""
     global cfg
+    __info = {"name": cfg("Settings", "NAME"), "version": cfg("Settings", "VERSION")}
     tbl = PrettyTable()
-    tbl.field_names = ["Имя", f'{cfg("Settings", "NAME")}']
-    tbl.add_row(['Версия', f'{cfg("Settings", "VERSION")}'])
+    tbl.field_names = ["Имя", f'{__info.get("name")}']
+    tbl.add_row(['Версия', f'{__info.get("version")}'])
     tbl.add_row(["Начало загрузки", strftime("%H:%M:%S", localtime())])
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
     print(tbl)
@@ -37,8 +42,9 @@ def start_print():
 
 def update_and_run():
     __files = []
-    for path, subdirs, files in os.walk("cogs"):
+    for path, _, files in os.walk("cogs"):
         for name in files:
+            path = Path("cogs/" + name).absolute()
             if name.endswith(".py"):
                 __files.append(
                     (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
@@ -57,6 +63,8 @@ async def _main():
             token = os.getenv("TOKEN")
         else:
             token = config['Settings']['TOKEN']
+        if sys.argv[1:] in ["--debug", "-d"]:
+            return 1
         await bot.start(token, reconnect=True)
 
 
