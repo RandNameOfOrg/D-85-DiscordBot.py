@@ -1,16 +1,23 @@
 """Start the D-85 bot in discord"""
+from asyncio import run
 from colorama import Fore, Style
 from core import Bot, sqlite
 from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
-from time import strftime, localtime
-from asyncio import run
 from configparser import ConfigParser
-from pathlib import Path
+from time import strftime, localtime
 from prettytable import PrettyTable
+from update_check.main import checkForUpdates
+import os
 
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
+debug = False
+
+if debug:
+    import dotenv
+
+    dotenv.load_dotenv()
 
 if not PATH_TO_SQLITE.exists():
     sql = sqlite(PATH_TO_SQLITE)
@@ -28,14 +35,30 @@ def start_print():
     print(tbl)
 
 
-async def main():
+def update_and_run():
+    __files = []
+    for path, subdirs, files in os.walk("cogs"):
+        for name in files:
+            if name.endswith(".py"):
+                __files.append(
+                    (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
+    __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
+    for path, url in __files:
+        checkForUpdates(path, url)
+    run(_main())
+
+
+async def _main():
     """main function"""
     start_print()
 
     async with Bot() as bot:
-        token = config['Settings']['TOKEN']
+        if debug:
+            token = os.getenv("TOKEN")
+        else:
+            token = config['Settings']['TOKEN']
         await bot.start(token, reconnect=True)
 
 
 if __name__ == "__main__":
-    run(main())
+    update_and_run()

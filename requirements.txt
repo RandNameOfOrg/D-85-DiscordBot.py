@@ -4,3 +4,5 @@ asyncio
 colorama
 customtkinter
 prettytable
+update-check
+python-dotenv
