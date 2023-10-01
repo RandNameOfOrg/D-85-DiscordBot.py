@@ -41,6 +41,7 @@ def start_print():
 
 
 def update_and_run():
+    updated = False
     __files = []
     for path, _, files in os.walk("cogs"):
         for name in files:
@@ -50,7 +51,10 @@ def update_and_run():
                     (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
     __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
-        check_for_updates(path, url)
+        if check_for_updates(path, url):
+            updated = True
+    if updated:
+        os.execl(sys.executable, sys.executable, *sys.argv)
     run(_main())
 
 
