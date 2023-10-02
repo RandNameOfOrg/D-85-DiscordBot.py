@@ -9,3 +9,5 @@ config.read(PATH_TO_CONFIG)
 print(data())
 
 config.set("Settings", "VERSION", data().get("version"))
+with open(PATH_TO_CONFIG, "w") as cfg:
+    config.write(cfg)
