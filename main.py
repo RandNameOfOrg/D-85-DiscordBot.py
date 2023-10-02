@@ -16,7 +16,7 @@ from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
-debug = cfg("Settings", "DEBUG")
+debug = True if cfg("Settings", "DEBUG") == "True" else False
 
 if debug:
     import dotenv
@@ -55,7 +55,7 @@ def update_and_run():
     if updated:
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
         print("Обновление успешно завершено! Перезапустите программу")
-        exit(1)
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
     run(_main())
 
 
