@@ -8,7 +8,7 @@ from pathlib import Path
 
 from colorama import Fore, Style
 from prettytable import PrettyTable
-from update__check import check_for_updates
+from update__check import check_for_updates, is_up_to_date as iutd
 
 from core import Bot, sqlite
 from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
@@ -39,7 +39,9 @@ def start_print():
     print(tbl)
 
 
-def update_and_run():
+def update():
+    if sys.argv.count("--noupdate") > 0:
+        return
     updated = False
     __files = []
     for path, _, files in os.walk("cogs"):
@@ -50,13 +52,24 @@ def update_and_run():
                     (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
     __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
+        if iutd(path, url):
+            print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
+            __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
+            if __update == "n":
+                print("Обновление отменено!")
+                return
+            elif __update == "y":
+                pass
+            else:
+                print("Обновление отменено!")
+
+    for path, url in __files:
         if check_for_updates(path, url):
             updated = True
     if updated:
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
         print("Обновление успешно завершено! Перезапустите программу")
         os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
-    run(_main())
 
 
 async def _main():
@@ -74,4 +87,5 @@ async def _main():
 
 
 if __name__ == "__main__":
-    update_and_run()
+    update()
+    run(_main())

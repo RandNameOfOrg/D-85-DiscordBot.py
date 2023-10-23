@@ -9,6 +9,7 @@ import asyncio
 
 class AppCommands(Plugin):
     def __init__(self, bot: Bot) -> None:
+        super().__init__(bot)
         self.bot = bot
         loop = asyncio.get_running_loop()
         loop.create_task(self.sync_2())

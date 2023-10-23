@@ -14,7 +14,7 @@ class HelpSelect(Select):
     def __init__(self, bot: commands.Bot, name: str):
         super().__init__(placeholder=name, options=[discord.SelectOption(
             label=cog_name, description=cog.__doc__
-        ) for cog_name, cog in bot.cogs.items() if cog.__cog_commands__ and cog_name not in ['Com']
+        ) for cog_name, cog in bot.cogs.items() if cog.__cog_commands__ and cog_name not in []
         ])
         self.bot = bot
 
@@ -28,7 +28,6 @@ class HelpSelect(Select):
 
         for i in cog.walk_app_commands():
             com_mix.append(i)
-
         embed = discord.Embed(
             title=f'Команды {cog.__cog_name__}',
             description='\n'.join(
@@ -36,11 +35,22 @@ class HelpSelect(Select):
                 command
                 in com_mix)
         )
-        await interaction.response.send_message(embed=embed)
+        await interaction.edit_original_response(embed=embed)
+
+
+class HelpView(View):
+    def __init__(self, bot: Bot):
+        super().__init__()
+        cfg = configparser.ConfigParser()
+        cfg.read(PATH_TO_CONFIG)
+        self.bot = bot
+        __bot_name = "D-85A" # Alpha
+        self.add_item(HelpSelect(bot, f'команды бота {__bot_name}'))
 
 
 class Help(Plugin):
     def __init__(self, bot: Bot):
+        super().__init__(bot)
         self.bot = bot
         bot.remove_command('help')
         loop = asyncio.get_running_loop()
@@ -49,26 +59,10 @@ class Help(Plugin):
     async def sync_help(self):
         await self.bot.tree.sync()
 
-    @commands.command()
-    async def help(self, ctx):
-        embed = discord.Embed(title='Help command', description='Help')
-        config = configparser.ConfigParser()
-        config.read(PATH_TO_CONFIG)
-        await ctx.send(embed=embed,
-                       view=View().add_item(
-                           HelpSelect(self.bot, 'категории бота {}'.format(config.get("Settings", "NAME")))))
-
     @app_commands.command(name="help", description='Все команды бота')
-    async def help1(self, interaction: discord.Interaction):
+    async def help(self, interaction: discord.Interaction):
         embed = discord.Embed(title='Help command', description='Help')
-        config = configparser.ConfigParser()
-        config.read(PATH_TO_CONFIG)
-        await interaction.response.send_message(embed=embed,
-                                                view=View().add_item(
-                                                    HelpSelect(self.bot,
-                                                               'категории бота {}'.format(
-                                                                   config.get("Settings", "NAME")))),
-                                                ephermal=True)
+        await interaction.response.send_message(embed=embed, view=HelpView(self.bot), ephermal=False)
 
 
 async def setup(bot: Bot):
