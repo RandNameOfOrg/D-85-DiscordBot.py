@@ -18,16 +18,20 @@ from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
-debug = True if cfg("Settings", "DEBUG") == "True" else False
+debug = None
+if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--env") > 0:
+    debug = True
+else:
+    debug = False
 
 if debug:
     import dotenv
 
     dotenv.load_dotenv()
 
-if not PATH_TO_SQLITE.exists():
-    sql = sqlite(PATH_TO_SQLITE)
-    sql.create_table()
+# if not PATH_TO_SQLITE.exists():
+#     sql = sqlite(PATH_TO_SQLITE)
+#     sql.create_table()
 
 
 def start_print():
