@@ -114,7 +114,7 @@ class Main(Plugin):
 
     @app_commands.command(name='test_command', description='Beta-command (unstable)')
     async def test_command(self, interaction: Interaction):
-        await interaction.response.send_message("nothing here")
+        await interaction.response.send_message("<:404:1166453427723841536>")
 
     @commands.hybrid_command(name='cat', description='Мем', with_app_command=True)
     async def cat(self, ctx):
@@ -126,7 +126,7 @@ class Main(Plugin):
 
     @app_commands.command(name='smile', description='Эмодзи сервера')
     async def smile(self, interaction: Interaction):
-        await interaction.response.send_message("<:boteon:706935391852167208> ")
+        await interaction.response.send_message("<:404:1166453427723841536>")
 
     @app_commands.command(name='vote', description='Голосование')
     async def vote(self, interaction: Interaction, title: str, timeout: int = 600, max_users: int | None = None):

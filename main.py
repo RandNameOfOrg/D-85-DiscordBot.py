@@ -1,9 +1,11 @@
 """Start the D-85 bot in discord"""
+import asyncio
+import logging
 import os
 import sys
 from asyncio import run
 from configparser import ConfigParser
-from time import strftime, localtime
+from time import strftime, localtime, sleep
 from pathlib import Path
 
 from colorama import Fore, Style
@@ -20,6 +22,7 @@ debug = True if cfg("Settings", "DEBUG") == "True" else False
 
 if debug:
     import dotenv
+
     dotenv.load_dotenv()
 
 if not PATH_TO_SQLITE.exists():
@@ -53,7 +56,7 @@ def update():
     __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
         if iutd(path, url):
-            print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
+            print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
             __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
             if __update == "n":
                 print("Обновление отменено!")
@@ -69,23 +72,31 @@ def update():
     if updated:
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
         print("Обновление успешно завершено! Перезапустите программу")
-        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
+        exit(code=2)
 
 
 async def _main():
     """main function"""
     start_print()
-
     async with Bot() as bot:
         if debug:
             token = os.getenv("TOKEN")
         else:
             token = config['Settings']['TOKEN']
-        if sys.argv[1:] in ["--debug", "-d"]:
-            return 1
         await bot.start(token, reconnect=True)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or sys.argv.count("--start") > 0:
+    # exit codes: 0 - error, 1 - success, 2 - update
     update()
-    run(_main())
+    sleep(0.02)
+    try:
+        run(_main())
+    except Exception as e:
+        logging.getLogger("MAIN.PY").error(Fore.LIGHTRED_EX + Style.BRIGHT + f"\n\nStopping app ({e.args})")
+        exit(code=0)
+    except KeyboardInterrupt:
+        logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nStopping app (KeyboardInterrupt)")
+        exit(code=1)
+    finally:
+        print(Style.RESET_ALL, end="")
