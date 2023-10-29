@@ -74,8 +74,9 @@ def update():
         if iutd(path, url):
             need_update = True
 
-    if need_update and not ask_user():
-        return
+    if need_update:
+        if not ask_user():
+            return
 
     for path, url in __files:
         if check_for_updates(path, url):
