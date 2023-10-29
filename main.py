@@ -47,8 +47,20 @@ def start_print():
 
 
 def update():
+    def ask_user():
+        print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
+        __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
+        if __update == "y":
+            return True
+        elif __update == "n":
+            print("Обновление отменено!")
+            return False
+        else:
+            return True
+
     if sys.argv.count("--noupdate") > 0:
         return
+    need_update = False
     updated = False
     __files = []
     for path, _, files in os.walk("cogs"):
@@ -60,15 +72,10 @@ def update():
     __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
         if iutd(path, url):
-            print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
-            __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
-            if __update == "n":
-                print("Обновление отменено!")
-                return
-            elif __update == "y":
-                pass
-            else:
-                print("Обновление отменено!")
+            need_update = True
+
+    if need_update and not ask_user():
+        return
 
     for path, url in __files:
         if check_for_updates(path, url):
