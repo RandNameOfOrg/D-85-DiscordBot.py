@@ -52,7 +52,7 @@ class Help(Plugin):
     def __init__(self, bot: Bot):
         super().__init__(bot)
         self.bot = bot
-        bot.remove_command('help')
+        self.bot.remove_command('help')
         loop = asyncio.get_running_loop()
         loop.create_task(self.sync_help())
 

@@ -99,6 +99,7 @@ class Main(Plugin):
     async def sync_code(self):
         await self.bot.tree.sync()
 
+    # region commands
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         embed = Embed(
@@ -139,6 +140,8 @@ class Main(Plugin):
             return
         await interaction.response.send_message(f'Голосование создано', ephemeral=True)
         view._message = msg
+
+    # endregion
 
 
 async def setup(bot: Bot):
