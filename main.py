@@ -68,8 +68,8 @@ def update():
             path = Path("cogs/" + name).absolute()
             if name.endswith(".py"):
                 __files.append(
-                    (path, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/" + name))
-    __files.append((__file__, "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
+                    (path, f"https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/{name}"))
+    __files.append((Path(__file__).absolute(), "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
     for path, url in __files:
         if iutd(path, url):
             need_update = True
