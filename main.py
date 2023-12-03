@@ -19,6 +19,7 @@ config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
 debug = None
+raw_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main"
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--env") > 0:
     debug = True
 else:
@@ -68,8 +69,8 @@ def update():
             path = Path("cogs/" + name).absolute()
             if name.endswith(".py"):
                 __files.append(
-                    (path, f"https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/cogs/{name}"))
-    __files.append((Path(__file__).absolute(), "https://raw.githubusercontent.com/MGS-Daniil/D-85-DiscordBot.py/main/main.py"))
+                    (path, f"{raw_url}/cogs/{name}"))
+    __files.append((Path(__file__).absolute(), "{raw_url}/main.py"))
     for path, url in __files:
         if iutd(path, url):
             need_update = True
