@@ -53,11 +53,11 @@ def update():
         __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
         if __update == "y":
             return True
-        elif __update == "n":
+        elif __update == "n" or __update == "":
             print("Обновление отменено!")
             return False
         else:
-            return True
+            return False
 
     if sys.argv.count("--noupdate") > 0:
         return
@@ -70,7 +70,7 @@ def update():
             if name.endswith(".py"):
                 __files.append(
                     (path, f"{raw_url}/cogs/{name}"))
-    __files.append((Path(__file__).absolute(), "{raw_url}/main.py"))
+    __files.append((Path(__file__).absolute(), f"{raw_url}/main.py"))
     for path, url in __files:
         if iutd(path, url):
             need_update = True
