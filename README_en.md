@@ -7,11 +7,9 @@ prefix: **!** аnd **/**
 ### commands D-85:
 
 - help (lists all commands) in [help.py](cogs%2Fhelp.py)
-- cat (gif with a cat) in [code.py](cogs%2Fcode.py)
-- dog (dog gif) in [code.py](cogs%2Fcode.py)
+- dog (dog gif) in [code.py](cogs%2Fcode.py) (**Will be deleted**)
 - date (displays the date) in [code.py](cogs%2Fcode.py)
 - report (report member) in [slash.py](cogs%2Fslash.py)
-- smile (this server's emoji) in [code.py](cogs%2Fcode.py)
 
 ## To get started with D-85 you need:
 

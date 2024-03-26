@@ -7,11 +7,9 @@
 ### команды D-85:
 
 - help (выводит все команды) в [help.py](cogs%2Fhelp.py)
-- cat (gif с котом) в [code.py](cogs%2Fcode.py)
-- dog (gif с собакой) в [code.py](cogs%2Fcode.py)
+- dog (gif с собакой) в [code.py](cogs%2Fcode.py) (**Будет удалено**)
 - date (выводит дату) в [code.py](cogs%2Fcode.py)
 - report (жалоба на участника) в [slash.py](cogs%2Fslash.py)
-- smile (эмодзи это-го сервера) в [code.py](cogs%2Fcode.py)
 
 ## Для начала работы с D-85 небходимо:
 

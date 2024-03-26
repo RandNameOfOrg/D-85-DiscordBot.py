@@ -117,17 +117,9 @@ class Main(Plugin):
     async def test_command(self, interaction: Interaction):
         await interaction.response.send_message("<:404:1166453427723841536>")
 
-    @commands.hybrid_command(name='cat', description='Мем', with_app_command=True)
-    async def cat(self, ctx):
-        await ctx.reply("https://i.gifer.com/JtaW.gif")
-
     @commands.hybrid_command(name='dog', description='Мем', with_app_command=True)
     async def dog(self, ctx):
-        await ctx.reply("https://i.gifer.com/2g.gif")
-
-    @app_commands.command(name='smile', description='Эмодзи сервера')
-    async def smile(self, interaction: Interaction):
-        await interaction.response.send_message("<:404:1166453427723841536>")
+        await ctx.reply(embed=discord.Embed(description="```Can not run this command.\n The command will be deleted soon```"), title="<:404:1166453427723841536>", ephemeral=True)
 
     @app_commands.command(name='vote', description='Голосование')
     async def vote(self, interaction: Interaction, title: str, timeout: int = 600, max_users: int | None = None):
