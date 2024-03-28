@@ -51,13 +51,10 @@ def update():
     def ask_user():
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
         __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
-        if __update == "y":
+        if __update == "y" or __update == "":
             return True
-        elif __update == "n" or __update == "":
-            print("Обновление отменено!")
-            return False
-        else:
-            return False
+        print("Обновление отменено!")
+        return False
 
     if sys.argv.count("--noupdate") > 0:
         return

@@ -13,6 +13,7 @@ from . import Plugin
 data = sqlite3.connect('users.db')
 cursor = data.cursor()
 
+
 @app_commands.context_menu(name="пожаловаться на пользователя")
 async def report(interaction: discord.Interaction, member: discord.Member):
     db_user_warns = cursor.execute(f"SELECT warns FROM users WHERE id = {member.id}").fetchone()[0]
@@ -34,6 +35,7 @@ async def unreport(interaction: discord.Interaction, member: discord.Member):
         await message.send_message('репорт удален')
     else:
         await message.send_message('у данного пользователя нет жалоб')
+
 
 @app_commands.context_menu(name="Количество жалоб")
 async def report_count(interaction: discord.Interaction, member: discord.Member):
