@@ -10,22 +10,22 @@ from pathlib import Path
 
 from colorama import Fore, Style
 from prettytable import PrettyTable
-from update__check import check_for_updates, is_up_to_date as iutd
+from updater import check_for_updates, is_up_to_date as iutd
 
-from core import Bot, sqlite
-from core.data import PATH_TO_SQLITE, PATH_TO_CONFIG
+from core import Bot
+from core.data import PATH_TO_CONFIG
 
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
 cfg = config.get
 debug = None
 raw_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main"
-if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--env") > 0:
+if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
     debug = True
 else:
     debug = False
 
-if debug:
+if debug or sys.argv.count("--env") > 0:
     import dotenv
 
     dotenv.load_dotenv()

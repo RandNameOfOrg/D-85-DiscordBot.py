@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from update__check import check_for_updates
+from updater import check_for_updates
 
 
 class AppData:
