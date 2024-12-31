@@ -1,8 +1,7 @@
 import json
-import os
 from pathlib import Path
 
-from updater import check_for_updates
+from core.updater import check_for_updates
 
 
 class AppData:

@@ -1,19 +1,18 @@
 """Start the D-85 bot in discord"""
-import asyncio
 import logging
 import os
 import sys
 from asyncio import run
 from configparser import ConfigParser
-from time import strftime, localtime, sleep
 from pathlib import Path
+from time import strftime, localtime, sleep
 
 from colorama import Fore, Style
 from prettytable import PrettyTable
-from updater import check_for_updates, is_up_to_date as iutd
 
 from core import Bot
 from core.data import PATH_TO_CONFIG
+from core.updater import Updater
 
 config = ConfigParser()
 config.read(PATH_TO_CONFIG)
@@ -29,6 +28,7 @@ if debug or sys.argv.count("--env") > 0:
     import dotenv
 
     dotenv.load_dotenv()
+
 
 # if not PATH_TO_SQLITE.exists():
 #     sql = sqlite(PATH_TO_SQLITE)
@@ -48,41 +48,38 @@ def start_print():
 
 
 def update():
+    if sys.argv.count("--noupdate") > 0:
+        return
+
     def ask_user():
-        print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
-        __update = input("Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ", "")
+        __update = input(
+            Fore.LIGHTWHITE_EX + Style.BRIGHT + "Обнаружено обновление! Хотите обновить? [Y/n]: ").lower().replace(" ",
+                                                                                                                   "")
         if __update == "y" or __update == "":
             return True
         print("Обновление отменено!")
         return False
 
-    if sys.argv.count("--noupdate") > 0:
-        return
-    need_update = False
-    updated = False
     __files = []
     for path, _, files in os.walk("cogs"):
         for name in files:
-            path = Path("cogs/" + name).absolute()
             if name.endswith(".py"):
-                __files.append(
-                    (path, f"{raw_url}/cogs/{name}"))
-    __files.append((Path(__file__).absolute(), f"{raw_url}/main.py"))
-    for path, url in __files:
-        if iutd(path, url):
-            need_update = True
+                __files.append("cogs/" + name)
+    __files.append(Path(__file__).absolute())
 
-    if need_update:
-        if not ask_user():
-            return
+    updater = Updater(Path(__file__).parent, raw_url, __files)
 
-    for path, url in __files:
-        if check_for_updates(path, url):
-            updated = True
-    if updated:
-        print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
-        print("Обновление успешно завершено! Перезапустите программу")
-        exit(code=2)
+    if not updater.getNonUpToDateFiles():
+        return
+
+    if not ask_user():
+        return
+
+    updater.updateAll()
+
+    print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
+    print("Обновление успешно завершено! Перезапустите программу")
+    exit(code=2)
 
 
 async def _main():
@@ -93,6 +90,7 @@ async def _main():
             token = os.getenv("TOKEN")
         else:
             token = config['Settings']['TOKEN']
+        print(Fore.LIGHTWHITE_EX + Style.BRIGHT + "Запуск бота... TOKEN: " + token[:4] + "***" + Style.RESET_ALL)
         await bot.start(token, reconnect=True)
 
 
@@ -103,7 +101,7 @@ if __name__ == "__main__" or sys.argv.count("--start") > 0:
     try:
         run(_main())
     except Exception as e:
-        logging.getLogger("MAIN.PY").error(Fore.LIGHTRED_EX + Style.BRIGHT + f"\n\nStopping app ({e.args})")
+        logging.getLogger("MAIN.PY").error(Fore.LIGHTRED_EX + Style.BRIGHT + f"\n\nStopping app: {e.args}")
         exit(code=0)
     except KeyboardInterrupt:
         logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nStopping app (KeyboardInterrupt)")

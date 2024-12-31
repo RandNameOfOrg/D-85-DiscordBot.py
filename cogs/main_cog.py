@@ -1,16 +1,16 @@
+import asyncio
 import configparser
 import datetime
-
-import discord
 import os
 import os.path
 
+import discord
 from discord import Interaction, app_commands
 from discord.ext import commands
+
 from core import Bot, Embed
 from core.data import PATH_TO_CONFIG
 from . import Plugin
-import asyncio
 
 # import functools, typing, asyncio
 # import App #Disabled
@@ -87,14 +87,16 @@ class VoteView(discord.ui.View):
 
 # noinspection PyUnresolvedReferences
 class Main(Plugin):
-    def __init__(self, bot: Bot):
-        super().__init__(bot)
+    def __init__(self, bot: Bot, *args, **kwargs):
+        super().__init__(bot, *args, **kwargs)
         self.bot = bot
         self.profiles = os.path.abspath(__file__).replace("main_cog.py", "cogs\\")
         self.config = configparser.ConfigParser()
         self.config.read(PATH_TO_CONFIG)
         loop = asyncio.get_running_loop()
         loop.create_task(self.sync_code())
+
+        self.prefix = self.config['Settings']['msg_prefix']
 
     async def sync_code(self):
         await self.bot.tree.sync()
@@ -119,7 +121,9 @@ class Main(Plugin):
 
     @commands.hybrid_command(name='dog', description='Мем', with_app_command=True)
     async def dog(self, ctx):
-        await ctx.reply(embed=discord.Embed(description="```Can not run this command.\n The command will be deleted soon```"), title="<:404:1166453427723841536>", ephemeral=True)
+        await ctx.reply(
+            embed=discord.Embed(description="```Can not run this command.\n The command will be deleted soon```"),
+            title="<:404:1166453427723841536>", ephemeral=True)
 
     @app_commands.command(name='vote', description='Голосование')
     async def vote(self, interaction: Interaction, title: str, timeout: int = 600, max_users: int | None = None):

@@ -1,0 +1,74 @@
+{
+  'app_permissions': '562949953732608',
+  'application_id': '888104078637428756',
+  'authorizing_integration_owners': {
+    '1': '849351619878715392'
+  },
+  'channel': {
+    'flags': 0,
+    'guild_id': '1132678990356828190',
+    'id': '1132682658590232688',
+    'last_message_id': '1305238747255668737',
+    'name': '💬・главный',
+    'nsfw': False,
+    'parent_id': '1132682636779859990',
+    'permissions': '2222085186637377',
+    'position': 13,
+    'rate_limit_per_user': 0,
+    'topic': None,
+    'type': 0
+  },
+  'channel_id': '1132682658590232688',
+  'context': 0,
+  'data': {
+    'id': '1312083428081926215',
+    'name': 'test_command',
+    'type': 1
+  },
+  'entitlement_sku_ids': [],
+  'entitlements': [],
+  'guild': {
+    'features': [
+      'SOUNDBOARD',
+      'NEWS',
+      'CHANNEL_ICON_EMOJIS_GENERATED',
+      'COMMUNITY'
+    ],
+    'id': '1132678990356828190',
+    'locale': 'en-US'
+  },
+  'guild_id': '1132678990356828190',
+  'guild_locale': 'en-US',
+  'id': '1312110774470180887',
+  'locale': 'ru',
+  'member': {
+    'avatar': None,
+    'banner': None,
+    'communication_disabled_until': None,
+    'deaf': False,
+    'flags': 0,
+    'joined_at': '2023-07-24T11:27:30.717000+00:00',
+    'mute': False,
+    'nick': None,
+    'pending': False,
+    'permissions': '2222085186637377',
+    'premium_since': None,
+    'roles': [
+      '1132952136922177546',
+      '1132949495118831626',
+      '1132946521248256082'
+    ],
+    'unusual_dm_activity_until': None,
+    'user': {
+      'avatar': '8475dc06aabd9605f9d49dc91e5db693',
+      'avatar_decoration_data': None,
+      'clan': None,
+      'discriminator': '0',
+      'global_name': '!Daniil',
+      'id': '849351619878715392',
+      'primary_guild': None,
+      'public_flags': 256,
+      'username': 'daniil10295'
+    }
+  }
+}
