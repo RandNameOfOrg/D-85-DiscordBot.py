@@ -21,6 +21,7 @@ debug = None
 raw_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main"
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
     debug = True
+    print("Debug mode enabled")
 else:
     debug = False
 
@@ -28,6 +29,8 @@ if debug or sys.argv.count("--env") > 0:
     import dotenv
 
     dotenv.load_dotenv()
+    config["Settings"]["DEBUG"] = "True"
+    config["Settings"]["TOKEN"] = os.getenv("TOKEN")
 
 
 # if not PATH_TO_SQLITE.exists():
@@ -48,7 +51,7 @@ def start_print():
 
 
 def update():
-    if sys.argv.count("--noupdate") > 0:
+    if sys.argv.count("--noupdate") > 0 or debug:
         return
 
     def ask_user():
@@ -94,7 +97,7 @@ async def _main():
         await bot.start(token, reconnect=True)
 
 
-if __name__ == "__main__" or sys.argv.count("--start") > 0:
+if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
     # exit codes: 0 - error, 1 - success, 2 - update
     update()
     sleep(0.02)
