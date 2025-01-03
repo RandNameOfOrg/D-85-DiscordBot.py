@@ -1,0 +1,11 @@
+[Settings]
+version = 2.3.4
+lang = en
+debug = True
+
+[Bot]
+name = D-85
+token = 0
+app_id = 0
+msg_prefix = <:D85:1312079037010673707>
+
