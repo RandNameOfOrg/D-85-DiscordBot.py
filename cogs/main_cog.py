@@ -9,7 +9,6 @@ from discord import Interaction, app_commands
 from discord.ext import commands
 
 from core import Bot, Embed
-from core.data import PATH_TO_CONFIG
 from . import Plugin
 
 # import functools, typing, asyncio
@@ -91,12 +90,8 @@ class Main(Plugin):
         super().__init__(bot, *args, **kwargs)
         self.bot = bot
         self.profiles = os.path.abspath(__file__).replace("main_cog.py", "cogs\\")
-        self.config = configparser.ConfigParser()
-        self.config.read(PATH_TO_CONFIG)
         loop = asyncio.get_running_loop()
         loop.create_task(self.sync_code())
-
-        self.prefix = self.config['Settings']['msg_prefix']
 
     async def sync_code(self):
         await self.bot.tree.sync()

@@ -27,7 +27,7 @@ cfg = config.get
 class Bot(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(command_prefix='!', intents=discord.Intents.default(),
-                         aplication_id=cfg('Settings', 'APP_ID'),
+                         aplication_id=cfg('Bot', 'APP_ID'),
                          chank_guild_at_startup=False)
 
     async def setup_hook(self):

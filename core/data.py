@@ -7,5 +7,6 @@ __all__ = (
 )
 
 MAIN_DIR = Path(__file__).parents[1].absolute()
-PATH_TO_SQLITE = MAIN_DIR / "users.db"
+DATA_DIR = MAIN_DIR / "data"
+PATH_TO_SQLITE = DATA_DIR / "users.db"
 PATH_TO_CONFIG = MAIN_DIR / "config.ini"
