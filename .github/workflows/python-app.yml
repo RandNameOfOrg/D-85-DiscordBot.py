@@ -49,4 +49,4 @@ jobs:
     steps:
       - name: Run
         run: |
-          python /home/runner/work/D-85-DiscordBot.py/D-85-DiscordBot.py/main.py --start --noupdate --env
+          python /home/runner/work/D-85-DiscordBot.py/main.py --start --noupdate --env
