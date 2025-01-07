@@ -19,7 +19,7 @@
 
 # config.ini
 - Если DEBUG = True то укажите токен и app_id в .env файле
-- перейдите на discord.com/developers/applications/ выберете своё приложение и получите токен и app_id
+- перейдите на https://discord.com/developers/applications/ выберете своё приложение и получите токен и app_id
 
 ##### English description (en): [en-EN](README_en.md)
 
