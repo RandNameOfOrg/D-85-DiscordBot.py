@@ -1,5 +1,5 @@
-import sqlite3
 import os.path
+import sqlite3
 
 __all__ = (
     "sqlite",

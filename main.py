@@ -11,15 +11,12 @@ from colorama import Fore, Style
 from prettytable import PrettyTable
 
 from core import Bot
-from core.data import PATH_TO_CONFIG
+from core.data import PATH_TO_CONFIG, cfg, config
 from core.lc_manager import get_lang_manager
 from core.updater import Updater
 
 lang_manager = get_lang_manager()
 get_lc_key = lang_manager.get_lc_by_key
-config = ConfigParser()
-config.read(PATH_TO_CONFIG)
-cfg = config.get
 debug = None
 raw_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main"
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
@@ -34,6 +31,7 @@ if debug or sys.argv.count("--env") > 0:
     dotenv.load_dotenv()
     config["Settings"]["DEBUG"] = "True"
     config["Bot"]["TOKEN"] = os.getenv("TOKEN")
+    config["Bot"]["APP_ID"] = os.getenv("NAME")
 
 
 # if not PATH_TO_SQLITE.exists():
@@ -74,9 +72,9 @@ def update():
         return
 
     def ask_user():
-        __update = input(
-            Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{get_lc_key('ASK_UPDATE')} [Y/n]: ").lower().replace(" ",
-                                                                                                                   "")
+        __update = (input(
+            Fore.LIGHTWHITE_EX +
+            Style.BRIGHT + f"{get_lc_key('ASK_UPDATE')} [Y/n]: ").lower().replace(" ", ""))
         if __update == "y" or __update == "":
             return True
         print(f"{get_lc_key('UPDATE_ABORT')}!")
@@ -111,8 +109,9 @@ async def _main():
             token = config['Settings']['TOKEN']
         if not token:
             raise ValueError("No token provided")
-            start_setup()
-        print(Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{get_lc_key('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
+            #  start_setup()
+        print(Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{get_lc_key('bot_starting')}... TOKEN: " + token[
+                                                                                               :6] + "***" + Style.RESET_ALL)
         await bot.start(token, reconnect=True)
 
 

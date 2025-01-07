@@ -1,9 +1,9 @@
 from __future__ import print_function
 
 import asyncio
+import sqlite3
 
 import discord
-import sqlite3
 from discord import app_commands
 from discord.ext import commands
 

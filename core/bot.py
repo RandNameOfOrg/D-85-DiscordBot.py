@@ -1,15 +1,14 @@
+import configparser
+import os
 import re
+import time
 from logging import getLogger  # , basicConfig
 from typing import Optional
 
-import configparser
 import discord
-import os
-import time
-from colorama import Fore, Style
 from discord.ext import commands
 
-from .data import PATH_TO_CONFIG, MAIN_DIR
+from .data import MAIN_DIR, cfg
 from .embed import Embed
 
 log = getLogger("Bot")
@@ -18,10 +17,6 @@ log = getLogger("Bot")
 __all__ = (
     "Bot",
 )
-
-config = configparser.ConfigParser()
-config.read(PATH_TO_CONFIG)
-cfg = config.get
 
 
 class Bot(commands.AutoShardedBot):
@@ -41,7 +36,8 @@ class Bot(commands.AutoShardedBot):
         log.info(f"Started as {self.user} (ID: {self.user.id}) in " + time.strftime(
             f"%H:%M:%S"))
 
-    async def success(self, content: str, interaction: discord.Interaction, *, ephemeral: Optional[bool] = False, embed: Optional[bool] = True) -> Optional[discord.WebhookMessage]:
+    async def success(self, content: str, interaction: discord.Interaction, *, ephemeral: Optional[bool] = False,
+                      embed: Optional[bool] = True) -> Optional[discord.WebhookMessage]:
         """Send a success message"""
         if interaction.response.is_done():
             if embed:

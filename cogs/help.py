@@ -44,7 +44,7 @@ class HelpView(View):
         cfg = configparser.ConfigParser()
         cfg.read(PATH_TO_CONFIG)
         self.bot = bot
-        __bot_name = "D-85A" # Alpha
+        __bot_name = "D-85A"  # Alpha
         self.add_item(HelpSelect(bot, f'команды бота {__bot_name}'))
 
 

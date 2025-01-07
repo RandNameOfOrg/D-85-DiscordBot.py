@@ -12,7 +12,8 @@ log = getLogger("Bot")
 
 
 class Moderation(Plugin):
-    def __init__(self, bot: Bot):
+    def __init__(self, bot: Bot, *args, **kwargs):
+        super().__init__(bot, *args, **kwargs)
         self.bot = bot
         loop = asyncio.get_running_loop()
         loop.create_task(self.sync_moder())
