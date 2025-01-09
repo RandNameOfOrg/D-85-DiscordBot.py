@@ -114,12 +114,6 @@ class Main(Plugin):
     async def test_command(self, interaction: Interaction):
         await interaction.response.send_message("<:404:1166453427723841536>")
 
-    @commands.hybrid_command(name='dog', description='Мем', with_app_command=True)
-    async def dog(self, ctx):
-        await ctx.reply(
-            embed=discord.Embed(description="```Can not run this command.\n The command will be deleted soon```"),
-            title="<:404:1166453427723841536>", ephemeral=True)
-
     @app_commands.command(name='vote', description='Голосование')
     async def vote(self, interaction: Interaction, title: str, timeout: int = 600, max_users: int | None = None):
         view = VoteView(title=title, timeout=timeout, max_users=max_users, author=interaction.user)
@@ -129,7 +123,7 @@ class Main(Plugin):
         if msg is None:
             await interaction.response.send_message(f'Не удалось создать голосование', ephemeral=True)
             return
-        await interaction.response.send_message(f'Голосование создано', ephemeral=True)
+        await interaction.response.send_message(f'Голосование создано', view=admin_view, ephemeral=True)
         view._message = msg
 
     # endregion

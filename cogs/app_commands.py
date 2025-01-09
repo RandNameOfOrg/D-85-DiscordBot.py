@@ -49,10 +49,7 @@ class AppCommands(Plugin):
         super().__init__(bot)
         self.bot = bot
         loop = asyncio.get_running_loop()
-        loop.create_task(self.sync_2())
-
-    async def sync_2(self):
-        await self.bot.tree.sync()
+        loop.create_task(self.sync())
 
 
 async def setup(bot: Bot):

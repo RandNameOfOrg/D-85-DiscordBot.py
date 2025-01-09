@@ -1,8 +1,7 @@
-import configparser
 import os
 import re
 import time
-from logging import getLogger  # , basicConfig
+from logging import getLogger
 from typing import Optional
 
 import discord
@@ -12,7 +11,6 @@ from .data import MAIN_DIR, cfg
 from .embed import Embed
 
 log = getLogger("Bot")
-# basicConfig(level="INFO")
 
 __all__ = (
     "Bot",

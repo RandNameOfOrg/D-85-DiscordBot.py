@@ -1,3 +1,4 @@
+import json
 import urllib.request
 from hashlib import sha256
 from pathlib import Path
@@ -32,6 +33,16 @@ class Updater:
     def check_for_update(self, filename):
         return self.update(filename) if not self.is_up_to_date(filename,
                                                                self.base_url + filename.name) else False
+
+    @property
+    def need_update(self):
+        if not Path(self.path / "updating_files" / ".json").exists():
+            return False
+
+        with open(self.path / "updating_files" / ".json", "r") as f:
+            local_data = json.load(f)
+        cloud_data = json.load(requests.get(self.base_url + "updating_files/.json").text)
+        return local_data["version"] != cloud_data["version"] and local_data["branch"] == cloud_data["branch"]
 
     def is_up_to_date(self, file_name, url):
         if not Path(self.path / file_name).exists():

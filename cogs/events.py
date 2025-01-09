@@ -5,8 +5,8 @@ from . import Plugin
 
 
 class Events(Plugin):
-    def __init__(self, bot: Bot):
-        self.bot = bot
+    def __init__(self, bot: Bot, *args, **kwargs):
+        super().__init__(bot, *args, **kwargs)
         # self.change_presence.start()
 
     # @tasks.loop(minutes=10.0)
@@ -65,4 +65,5 @@ class Events(Plugin):
 
 
 async def setup(bot: Bot):
+    return
     await bot.add_cog(Events(bot))
