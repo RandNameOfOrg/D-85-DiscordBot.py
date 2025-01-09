@@ -1,12 +1,11 @@
 from configparser import ConfigParser
 
-from core.data import PATH_TO_CONFIG, DATA_DIR
-
 __lc_manager = None
 
 
 class LocalizationManager:
     def __init__(self):
+        from core.data import PATH_TO_CONFIG, DATA_DIR
         self.config = ConfigParser()
         self.config.read(PATH_TO_CONFIG)
         self.LC_DIR = DATA_DIR / 'localization'
