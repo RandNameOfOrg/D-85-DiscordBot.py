@@ -1,3 +1,4 @@
+import cmd
 import os
 import sys
 import threading
@@ -13,7 +14,65 @@ from core.updater import Updater
 __all__ = ("start_print", "RestartRequired", "start_setup", "update", "console")
 
 
-class RestartRequired(Exception): pass
+class RestartRequired(Exception):
+    pass
+
+
+class Console(cmd.Cmd):
+    def __init__(self, thread: threading.Thread, prompt="> ", **kwargs):
+        super().__init__(**kwargs)
+        self.intro = ""
+        self.prompt = prompt
+        self.thread = thread
+
+    def do_restart(self, arg):
+        """Restart the bot"""
+        raise RestartRequired
+
+    def do_exit(self, arg):
+        """Stop the bot"""
+        sys.exit(0)
+
+    def do_config(self, args: list | None = None):
+        """Print config"""
+        if args and args[0] == "path":
+            print(f"PATH_TO_CONFIG: {PATH_TO_CONFIG}")
+            return
+        print("Config:")
+        for k, v in config.items():
+            print(f"\t{k}:")
+            for kk, vv in v.items():
+                if kk == "token" and not args.count("show"):
+                    vv = vv[:6] + "..."
+                print(f"\t\t{kk}: {vv}")
+
+    def complete_config(self, *args):
+        config_args = ["path", "show"]
+        return [i for i in config_args if i.startswith(args[0])]
+
+    def do_update(self, args):
+        """Update the bot"""
+        update()
+
+    def exit(self, line):
+        """Exit the program."""
+        self.close()
+
+    def get_commands(self):
+        return [i.replace("do_", "") for i in self.get_names() if
+                i.startswith("do_")]
+
+    def close(self):
+        print("\r" + Fore.LIGHTWHITE_EX + Style.BRIGHT + get_lc_key("CONSOLE_EXIT") + " [y/N] ", end="")
+        ans = input().lower()
+        if ans.replace(" ", "").replace("es", "") == "y":
+            print("OK")
+            raise KeyboardInterrupt
+
+    def precmd(self, line):
+        if not self.thread.is_alive():
+            self.close()
+        return line.lower()
 
 
 def start_print():
@@ -80,31 +139,6 @@ def console(thread: threading.Thread):
         return "wait"
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
     sleep(4)
-    print(get_lc_key("CONSOLE"), "v0.0.1")
-    print("Available only one language")
+    cl = Console(thread, prompt=f"{Fore.LIGHTWHITE_EX + Style.BRIGHT}{cfg('Bot', 'NAME')}>")
 
-    while thread.is_alive():
-        inp = input(f"{Fore.LIGHTWHITE_EX + Style.BRIGHT}{cfg('Bot', 'NAME')}> ")
-        command = inp.lower().split(" ")[0]
-        args = inp.lower().replace(command, "").strip().split(" ")
-
-        if command == "exit":
-            print("\r" + Fore.LIGHTWHITE_EX + Style.BRIGHT + get_lc_key("CONSOLE_EXIT") + " [y/N] ", end="")
-            ans = input().lower()
-            if ans.replace(" ", "").replace("es", "") == "y":
-                print("OK")
-                raise KeyboardInterrupt
-        elif command == "config":
-            print("Config:")
-            for k, v in config.items():
-                print(f"\t{k}:")
-                for kk, vv in v.items():
-                    if kk == "token" and args.count("--show") == 0:
-                        vv = vv[:6] + "..."
-                    print(f"\t\t{kk}: {vv}")
-        elif command == "restart":
-            print("Restarting...")
-            sleep(0.5)
-            exit(code=2)
-        else:
-            print("Command {} not found".format(command))
+    return cl.cmdloop(intro=get_lc_key("CONSOLE") + " v0.0.2" + "\nAvailable only one language")
