@@ -47,13 +47,19 @@ async def _main():
         await bot.start(token, reconnect=True)
 
 
+def run_main_thread():
+    """Run main thread"""
+    asyncio.set_event_loop(asyncio.new_event_loop())
+    asyncio.run(_main())
+
+
 if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
     # exit codes: 0 - success, 1 - error, 2 - update
     try:
         update()
         sleep(0.02)
 
-        bot_task = threading.Thread(target=asyncio.run, args=(_main(),), name="BOT", daemon=True)
+        bot_task = threading.Thread(target=run_main_thread, name="BOT", daemon=True)
         bot_task.start()
         sleep(0.02)
         if console(bot_task) == "wait":
