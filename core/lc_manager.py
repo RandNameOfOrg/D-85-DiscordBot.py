@@ -1,3 +1,4 @@
+import json
 from configparser import ConfigParser
 
 __lc_manager = None
@@ -16,12 +17,18 @@ class LocalizationManager:
     def update_data(self):
         __old_lc_data = self.__lc_data
         self.__lc_data = {}
+
         for file in self.LC_DIR.iterdir():
-            if file.suffix == '.ini':
-                lc = ConfigParser()
-                lc.read(file, encoding='utf-8')
-                lc_dict = {section: dict(lc[section]) for section in lc.sections()}
-                self.__lc_data[lc_dict['Settings']['lang']] = lc_dict
+            if file.suffix == ".json":
+                lc_name = file.name.removesuffix(".json")
+                with file.open("r") as f:
+                    self.__lc_data[lc_name] = json.loads(f.read())
+        # for file in self.LC_DIR.iterdir():
+        #     if file.suffix == '.ini':
+        #         lc = ConfigParser()
+        #         lc.read(file, encoding='utf-8')
+        #         lc_dict = {section: dict(lc[section]) for section in lc.sections()}
+        #         self.__lc_data[lc_dict['Settings']['lang']] = lc_dict
         if __old_lc_data != self.__lc_data:
             print(f"{self.get_lc_by_key('lc_updated')}!")
 
@@ -43,10 +50,12 @@ class LocalizationManager:
 
     def get_lc_dict(self, lang=None) -> dict:
         """return dict with localization data"""
-
         lang = lang or self._lang
+
+        translations: dict = self.__lc_data[lang.lower()].copy()
+        translations.pop("settings", None)
         # print(f"GET LC DICT: {self.__lc_data[lang.lower()]['translations']}")
-        return self.__lc_data[lang.lower()]['translations']
+        return translations
 
     def get_lc_by_key(self, key: str, lang: str | None = None, *args, **kwargs):
         """shortcut for self.get_lc_dict[lang][key]"""
