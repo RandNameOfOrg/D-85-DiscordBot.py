@@ -43,8 +43,8 @@ class LocalizationManager:
         return self._lang
 
     @lang.setter
-    def lang(self, lang):
-        self.config.set('Settings', 'lang', lang)
+    def lang(self, lang: str):
+        self.config.set('Settings', 'lang', lang.replace('ua', 'uk'))
         with open(PATH_TO_CONFIG, 'w') as cfg:
             self.config.write(cfg)
 
