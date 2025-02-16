@@ -8,7 +8,7 @@ from time import strftime, localtime, sleep
 from colorama import Fore, Style
 from prettytable import PrettyTable
 
-from core.data import cfg, get_lc_key, config, PATH_TO_CONFIG, debug, raw_url
+from core.data import cfg, lang_manager as lm, config, PATH_TO_CONFIG, debug, raw_url
 from core.updater import Updater
 
 __all__ = ("start_print", "RestartRequired", "start_setup", "update", "console")
@@ -29,11 +29,13 @@ class Console(cmd.Cmd):
         """Restart the bot"""
         raise RestartRequired
 
-    def do_exit(self, arg):
+    @staticmethod
+    def do_exit(arg):
         """Stop the bot"""
         sys.exit(0)
 
-    def do_config(self, args: list | None = None):
+    @staticmethod
+    def do_config(args: list | None = None):
         """Print config"""
         if args and args[0] == "path":
             print(f"PATH_TO_CONFIG: {PATH_TO_CONFIG}")
@@ -63,7 +65,7 @@ class Console(cmd.Cmd):
                 i.startswith("do_")]
 
     def close(self):
-        print("\r" + Fore.LIGHTWHITE_EX + Style.BRIGHT + get_lc_key("CONSOLE_EXIT") + " [y/N] ", end="")
+        print("\r" + Fore.LIGHTWHITE_EX + Style.BRIGHT + lm["console.exit"] + " [y/N] ", end="")
         ans = input().lower()
         if ans.replace(" ", "").replace("es", "") == "y":
             print("OK")
@@ -71,7 +73,7 @@ class Console(cmd.Cmd):
 
     def precmd(self, line):
         if not self.thread.is_alive():
-            self.close()
+            print(lm["console.bot_stopped"])
         return line.lower()
 
 
@@ -79,13 +81,13 @@ def start_print():
     """print a start message"""
     __info = {"name": cfg("Bot", "NAME"), "version": cfg("Settings", "VERSION")}
     tbl = PrettyTable()
-    tbl.field_names = [get_lc_key("NAME"), f'{__info.get("name")}']
+    tbl.field_names = [lm["NAME"], f'{__info.get("name")}']
     tbl.add_rows([
-        [get_lc_key("VERSION"), f'{__info.get("version")}'],
-        [get_lc_key("START_TIME"), strftime("%H:%M:%S", localtime())],
+        [lm["VERSION"], f'{__info.get("version")}'],
+        [lm["START_TIME"], strftime("%H:%M:%S", localtime())],
     ])
     if debug:
-        tbl.add_row(["DEBUG", get_lc_key("TRUE")])
+        tbl.add_row(["DEBUG", lm["TRUE"]])
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
     print(tbl)
 
@@ -94,9 +96,9 @@ def start_setup():
     """print a setup message and fill config.ini"""
     print()
     config["Settings"]["NAME"] = input(
-        Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{get_lc_key('GET_NAME')}: ")
+        Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{lm['GET_NAME']}: ")
     config["Settings"]["TOKEN"] = input(
-        Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{get_lc_key('GET_TOKEN')}: ")
+        Fore.LIGHTWHITE_EX + Style.BRIGHT + f"{lm['GET_TOKEN']}: ")
     with open(PATH_TO_CONFIG, "w") as f:
         config.write(f)
 
@@ -108,10 +110,10 @@ def update():
     def ask_user():
         __update = (input(
             Fore.LIGHTWHITE_EX +
-            Style.BRIGHT + f"{get_lc_key('ASK_UPDATE')} [Y/n]: ").lower().replace(" ", ""))
+            Style.BRIGHT + f"{lm['ASK_UPDATE']} [Y/n]: ").lower().replace(" ", ""))
         if __update == "y" or __update == "":
             return True
-        print(f"{get_lc_key('UPDATE_ABORT')}!")
+        print(f"{lm['UPDATE_ABORT']}!")
         return False
 
     __files = []
@@ -129,7 +131,7 @@ def update():
     updater.updateAll()
 
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
-    print(f"{get_lc_key('update_success')}! {get_lc_key('restart_program')}")
+    print(f"{lm['update_success']}! {lm['restart_program']}")
 
 
 def console(thread: threading.Thread):
@@ -141,4 +143,4 @@ def console(thread: threading.Thread):
     sleep(4)
     cl = Console(thread, prompt=f"{Fore.LIGHTWHITE_EX + Style.BRIGHT}{cfg('Bot', 'NAME')}>")
 
-    return cl.cmdloop(intro=get_lc_key("CONSOLE") + " v0.0.2" + "\nAvailable only one language")
+    return cl.cmdloop(intro=lm["console.word"] + " v0.0.2" + "\nAvailable only one language")
