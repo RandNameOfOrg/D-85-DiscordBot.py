@@ -1,4 +1,5 @@
 import json
+import re
 import urllib.request
 from hashlib import sha256
 from pathlib import Path
@@ -8,12 +9,32 @@ import requests
 
 class Updater:
 
-    def __init__(self, path: str | Path, url: str, files: list):
+    def __init__(self, path: str | Path, files: list):
         if not Path(path).exists():
             raise ValueError("The path does not exist.")
         self.path = Path(path)
-        self.base_url = url
+
+        if Path(self.path / "updating_files" / ".json").exists():
+            with open(self.path / "updating_files" / ".json", "r") as f:
+                _ = json.load(f)
+                self.branch = _["branch"]
+                self.base_url = self.ex_var(_["base_url"])
+        else:
+            self.base_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main/"
         self.filesToUpdate = [Path(file) for file in files]
+
+    def ex_var(self, string):
+        """
+        :param string:
+        :return:
+        string with variables
+        """
+        pattern = re.compile(r'%\{([^}]+)\}')
+
+        with open(self.path / "updating_files" / ".json", "r") as f:
+            d = json.load(f)
+
+        return pattern.sub(lambda m: str(d[m.group(1)]), string)
 
     def getNonUpToDateFiles(self):
         return [file for file in self.filesToUpdate if not self.is_up_to_date(file, self.base_url + file.name)]

@@ -8,7 +8,7 @@ from time import strftime, localtime, sleep
 from colorama import Fore, Style
 from prettytable import PrettyTable
 
-from core.data import cfg, lang_manager as lm, config, PATH_TO_CONFIG, debug, raw_url
+from core.data import cfg, lang_manager as lm, config, PATH_TO_CONFIG, debug
 from core.updater import Updater
 
 __all__ = ("start_print", "RestartRequired", "start_setup", "update", "console")
@@ -123,7 +123,7 @@ def update():
                 __files.append("cogs/" + name)
     __files.append(Path(__file__).absolute())
 
-    updater = Updater(Path(__file__).parent, raw_url, __files)
+    updater = Updater(Path(__file__).parent, __files)
 
     if not updater.getNonUpToDateFiles() and not ask_user() and not updater.need_update:
         return

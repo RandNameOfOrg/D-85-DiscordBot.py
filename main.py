@@ -55,6 +55,9 @@ def run_main_thread():
 
 if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
     # exit codes: 0 - success, 1 - error, 2 - update
+    os.system("cls" if os.name == "nt" else "clear")
+    os.system(f"title {cfg('Bot', 'NAME')} v{cfg('Settings', 'VERSION')}")
+    os.system("chcp 65001")
     try:
         update()
         sleep(0.02)

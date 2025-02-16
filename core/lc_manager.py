@@ -84,8 +84,3 @@ def get_lang_manager():
     if not __lc_manager:
         __lc_manager = LocalizationManager()
     return __lc_manager
-
-
-if __name__ == "__main__":
-    lc = get_lang_manager()
-    print(lc.get_lc_by_key("settings.full_lang_name"))
