@@ -16,8 +16,8 @@
   "restart_program": "Restart the program",
   "bot_starting": "Bot is starting",
   "console": {
-    "word": "Console",
-    "exit": "Do you want to exit the application?",
-    "bot_stopped": "Bot thread is stopped"
+    "word": "Консоль",
+    "exit": "Ви дійсно бажаєте закрити програму?",
+    "bot_stopped": "Потік бота зупинено"
   }
 }
