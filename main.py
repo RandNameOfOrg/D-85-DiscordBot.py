@@ -9,7 +9,7 @@ from time import sleep
 from colorama import Fore, Style
 
 from core import Bot
-from core.data import cfg, config, get_lc_key, debug
+from core.data import cfg, config, get_lc_key as lc, debug
 from runner import *
 
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
@@ -43,7 +43,7 @@ async def _main():
             raise ValueError("No token provided")
             #  start_setup()
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
-        print(f"{get_lc_key('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
+        print(f"{lc('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
         await bot.start(token, reconnect=True)
 
 

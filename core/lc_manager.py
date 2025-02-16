@@ -36,6 +36,12 @@ class LocalizationManager:
         self.update_data()
         return self
 
+    def __getitem__(self, item):
+        return self.get_lc_by_key(item)
+
+    def __setitem__(self, key, value):
+        self.config.set('Settings', key, value)
+
     @property
     def lang(self):
         if not self._lang:
@@ -59,6 +65,16 @@ class LocalizationManager:
 
     def get_lc_by_key(self, key: str, lang: str | None = None, *args, **kwargs):
         """shortcut for self.get_lc_dict[lang][key]"""
+        if "." in key:
+            keys = key.split(".")
+            key = self.get_lc_by_key(keys.pop(0), lang, *args, **kwargs)
+
+            for k in keys:
+                try:
+                    key = key.get(k, *args, **kwargs)
+                except KeyError:
+                    key = None
+            return key
         # print(f"GET LC KEY: {key} lang")
         return self.get_lc_dict(lang).get(key.lower(), *args, **kwargs)
 
@@ -68,3 +84,8 @@ def get_lang_manager():
     if not __lc_manager:
         __lc_manager = LocalizationManager()
     return __lc_manager
+
+
+if __name__ == "__main__":
+    lc = get_lang_manager()
+    print(lc.get_lc_by_key("settings.full_lang_name"))
