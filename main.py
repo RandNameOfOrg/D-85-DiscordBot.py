@@ -14,7 +14,6 @@ from runner import *
 
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
     debug = True
-    print("Debug mode enabled")
 else:
     debug = False
 
@@ -23,8 +22,10 @@ if debug or sys.argv.count("--env") > 0:
 
     dotenv.load_dotenv()
     config["Settings"]["DEBUG"] = "True"
+    debug = True
     config["Bot"]["TOKEN"] = os.getenv("TOKEN") or config["Bot"]["TOKEN"]
     config["Bot"]["APP_ID"] = os.getenv("APP_ID") or config["Bot"]["APP_ID"]
+    print("Debug mode enabled")
 
 
 # if not PATH_TO_SQLITE.exists():

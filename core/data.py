@@ -12,7 +12,6 @@ __all__ = (
     "cfg",
     "get_lc_key",
     "debug",
-    "raw_url",
 )
 
 if __name__ == "__main__":

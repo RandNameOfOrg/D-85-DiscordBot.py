@@ -18,10 +18,12 @@ class Updater:
             with open(self.path / "updating_files" / ".json", "r") as f:
                 _ = json.load(f)
                 self.branch = _["branch"]
-                self.base_url = self.ex_var(_["base_url"])
+                self.base_url = self.ex_var(_["url"])
         else:
             self.base_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main/"
         self.filesToUpdate = [Path(file) for file in files]
+        print(self.branch)
+        print(self.base_url)
 
     def ex_var(self, string):
         """
@@ -44,7 +46,9 @@ class Updater:
 
         if not Path(path).exists():
             return False
-        urllib.request.urlretrieve(self.path / filename.name, path)
+        print(f"Updating {filename.name}")
+        print(f"From: {self.base_url + filename.name}")
+        urllib.request.urlretrieve(path, self.path / filename.name)
         return True
 
     def updateAll(self):
