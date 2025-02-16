@@ -15,6 +15,9 @@
   "update_success": "Update successful",
   "restart_program": "Restart the program",
   "bot_starting": "Bot is starting",
-  "console": "Console",
-  "console.exit": "Do you want to exit the application?"
+  "console": {
+    "word": "Console",
+    "exit": "Do you want to exit the application?",
+    "bot_stopped": "Bot thread is stopped"
+  }
 }
