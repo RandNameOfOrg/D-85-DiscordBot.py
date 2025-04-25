@@ -10,10 +10,11 @@ from discord.ext import commands
 from .data import MAIN_DIR, cfg
 from .embed import Embed
 
-log = getLogger("Bot")
+log = getLogger("D-Bot")
 
 __all__ = (
     "Bot",
+    log
 )
 
 
@@ -43,6 +44,7 @@ class Bot(commands.AutoShardedBot):
                                                        ephemeral=ephemeral)
             else:
                 return await interaction.followup.send(content=f"[☑]{content}", ephemeral=ephemeral)
+        return None
 
     async def error(self, content: str, interaction: discord.Interaction, *, ephemeral: Optional[bool] = True,
                     embed: Optional[bool] = True) -> Optional[discord.WebhookMessage]:
@@ -53,3 +55,4 @@ class Bot(commands.AutoShardedBot):
                                                        ephemeral=ephemeral)
             else:
                 return await interaction.followup.send(content=f"[❌]{content}", ephemeral=ephemeral)
+        return None
