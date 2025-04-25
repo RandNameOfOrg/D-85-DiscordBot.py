@@ -41,7 +41,7 @@ async def _main():
         else:
             token = config['Settings']['TOKEN']
         if not token:
-            raise ValueError("No token provided")
+            raise ValueError(lc["NO_TOKEN"])
             #  start_setup()
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
         print(f"{lc('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
@@ -49,7 +49,7 @@ async def _main():
 
 
 def run_main_thread():
-    """Run main thread"""
+    """Run the main thread"""
     asyncio.set_event_loop(asyncio.new_event_loop())
     asyncio.run(_main())
 
@@ -59,6 +59,7 @@ if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
     os.system("cls" if os.name == "nt" else "clear")
     os.system(f"title {cfg('Bot', 'NAME')} v{cfg('Settings', 'VERSION')}")
     os.system("chcp 65001")
+    code = 0
     try:
         update()
         sleep(0.02)
@@ -70,13 +71,12 @@ if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
             bot_task.join()
     except KeyboardInterrupt:
         logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nStopping app (User interrupt)")
-        exit(code=0)
     except RestartRequired:
         logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nRestarting app")
-        exit(code=2)
+        code=2
     except Exception as e:
         logging.getLogger("MAIN.PY").error(Fore.LIGHTRED_EX + Style.BRIGHT + f"\n\nStopping app: {e.args}")
-        exit(code=1)
+        code=1
     finally:
         print(Style.RESET_ALL, end="")
-        exit(code=0)
+        exit(code=code)

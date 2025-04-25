@@ -48,7 +48,9 @@ class Updater:
             return False
         print(f"Updating {filename.name}")
         print(f"From: {self.base_url + filename.name}")
-        urllib.request.urlretrieve(path, self.path / filename.name)
+        # urllib.request.urlretrieve(path, self.path / filename.name)
+        print(f"To: {self.path / filename.name}")
+        # urllib.request.urlretrieve(self.base_url + filename.name, path)
         return True
 
     def updateAll(self):
@@ -56,8 +58,10 @@ class Updater:
             self.update(filename)
 
     def check_for_update(self, filename):
-        return self.update(filename) if not self.is_up_to_date(filename,
-                                                               self.base_url + filename.name) else False
+        if not Path(self.path / filename).exists() and self.is_up_to_date(filename,
+                                                                          self.base_url + filename.name):
+            return False
+        return self.update(filename)
 
     @property
     def need_update(self):

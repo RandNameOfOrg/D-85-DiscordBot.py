@@ -104,8 +104,10 @@ def start_setup():
 
 
 def update():
-    if sys.argv.count("--noupdate") > 0 or debug:
-        return
+    print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + "Updater module not avalible at this time" + Style.RESET_ALL)
+    return
+    # if sys.argv.count("--noupdate") > 0 or debug:
+    #     return
 
     def ask_user():
         __update = (input(
@@ -124,10 +126,10 @@ def update():
     __files.append(Path(__file__).absolute())
 
     updater = Updater(Path(__file__).parent, __files)
-
-    if not updater.getNonUpToDateFiles() and not ask_user() and not updater.need_update:
+    # TODO: Fix that ask_user() is not called
+    if not updater.getNonUpToDateFiles() and ask_user() is False and not updater.need_update:
         return
-
+    return
     updater.updateAll()
 
     print(Fore.LIGHTWHITE_EX + Style.BRIGHT)
