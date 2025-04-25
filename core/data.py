@@ -12,7 +12,6 @@ __all__ = (
     "cfg",
     "get_lc_key",
     "debug",
-    "raw_url",
 )
 
 if __name__ == "__main__":
@@ -37,4 +36,3 @@ get_lc_key = lang_manager.get_lc_by_key
 
 debug = cfg("Settings", "DEBUG")
 
-raw_url = "https://raw.githubusercontent.com/RandNameOfOrg/D-85-DiscordBot.py/main"

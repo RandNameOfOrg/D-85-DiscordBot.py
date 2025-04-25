@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "full_lang_name": "Russian Language",
+    "full_lang_name_loc": "English language"
+  },
+  "name": "Name",
+  "version": "Version",
+  "start_time": "Start time",
+  "true": "Yes",
+  "false": "No",
+  "debug": "Debug",
+  "lc_updated": "Localization updated",
+  "update_abort": "Update canceled",
+  "ask_update": "New update found! Do you want to update?",
+  "update_success": "Update successful",
+  "restart_program": "Restart the program",
+  "bot_starting": "Bot is starting",
+  "console": {
+    "word": "Консоль",
+    "exit": "Завершить работу программы?",
+    "bot_stopped": "Бот был остановлен"
+  }
+}

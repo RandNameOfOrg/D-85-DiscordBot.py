@@ -9,12 +9,11 @@ from time import sleep
 from colorama import Fore, Style
 
 from core import Bot
-from core.data import cfg, config, get_lc_key, debug
+from core.data import cfg, config, get_lc_key as lc, debug
 from runner import *
 
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
     debug = True
-    print("Debug mode enabled")
 else:
     debug = False
 
@@ -23,8 +22,10 @@ if debug or sys.argv.count("--env") > 0:
 
     dotenv.load_dotenv()
     config["Settings"]["DEBUG"] = "True"
+    debug = True
     config["Bot"]["TOKEN"] = os.getenv("TOKEN") or config["Bot"]["TOKEN"]
     config["Bot"]["APP_ID"] = os.getenv("APP_ID") or config["Bot"]["APP_ID"]
+    print("Debug mode enabled")
 
 
 # if not PATH_TO_SQLITE.exists():
@@ -40,21 +41,25 @@ async def _main():
         else:
             token = config['Settings']['TOKEN']
         if not token:
-            raise ValueError("No token provided")
+            raise ValueError(lc["NO_TOKEN"])
             #  start_setup()
         print(Fore.LIGHTWHITE_EX + Style.BRIGHT, end="")
-        print(f"{get_lc_key('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
+        print(f"{lc('bot_starting')}... TOKEN: " + token[:6] + "***" + Style.RESET_ALL)
         await bot.start(token, reconnect=True)
 
 
 def run_main_thread():
-    """Run main thread"""
+    """Run the main thread"""
     asyncio.set_event_loop(asyncio.new_event_loop())
     asyncio.run(_main())
 
 
 if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
     # exit codes: 0 - success, 1 - error, 2 - update
+    os.system("cls" if os.name == "nt" else "clear")
+    os.system(f"title {cfg('Bot', 'NAME')} v{cfg('Settings', 'VERSION')}")
+    os.system("chcp 65001")
+    code = 0
     try:
         update()
         sleep(0.02)
@@ -66,13 +71,12 @@ if __name__ == "__main__" or sys.argv.count("--start-bot") > 0:
             bot_task.join()
     except KeyboardInterrupt:
         logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nStopping app (User interrupt)")
-        exit(code=0)
     except RestartRequired:
         logging.getLogger("MAIN.PY").warning(Fore.LIGHTRED_EX + Style.BRIGHT + "\n\nRestarting app")
-        exit(code=2)
+        code=2
     except Exception as e:
         logging.getLogger("MAIN.PY").error(Fore.LIGHTRED_EX + Style.BRIGHT + f"\n\nStopping app: {e.args}")
-        exit(code=1)
+        code=1
     finally:
         print(Style.RESET_ALL, end="")
-        exit(code=0)
+        exit(code=code)
