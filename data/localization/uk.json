@@ -15,6 +15,7 @@
   "update_success": "Update successful",
   "restart_program": "Restart the program",
   "bot_starting": "Bot is starting",
+  "no_token": "Token is not set",
   "console": {
     "word": "Консоль",
     "exit": "Ви дійсно бажаєте закрити програму?",
