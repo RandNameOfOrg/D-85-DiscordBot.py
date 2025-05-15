@@ -14,7 +14,7 @@ log = getLogger("D-Bot")
 
 __all__ = (
     "Bot",
-    log
+    "log",
 )
 
 
