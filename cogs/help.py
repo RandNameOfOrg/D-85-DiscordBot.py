@@ -62,7 +62,7 @@ class Help(Plugin):
     @app_commands.command(name="help", description='Все команды бота')
     async def help(self, interaction: discord.Interaction):
         embed = discord.Embed(title='Help command', description='Help')
-        await interaction.response.send_message(embed=embed, view=HelpView(self.bot), ephermal=False)
+        await interaction.response.send_message(embed=embed, view=HelpView(self.bot), ephermal=True)
 
 
 async def setup(bot: Bot):
