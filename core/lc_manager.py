@@ -1,6 +1,8 @@
 import json
 from configparser import ConfigParser
 
+from core import PATH_TO_CONFIG
+
 __lc_manager = None
 
 

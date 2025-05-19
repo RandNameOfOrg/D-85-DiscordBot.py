@@ -1,5 +1,4 @@
 import asyncio
-import configparser
 import datetime
 import os
 import os.path
@@ -107,8 +106,8 @@ class Main(Plugin):
 
     @app_commands.command(name='date', description='date')
     async def date(self, interaction: Interaction):
-        now = datetime.datetime.now()
-        await interaction.response.send_message(now.strftime("сейчас %d.%m.%y %H:%M:%S"))
+        now = datetime.datetime.now(datetime.timezone.utc)
+        await interaction.response.send_message(now.strftime("сейчас %d.%m.%y %H:%M:%S UTC"))
 
     @app_commands.command(name='test_command', description='Beta-command (unstable)')
     async def test_command(self, interaction: Interaction):
