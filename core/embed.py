@@ -12,4 +12,4 @@ class Embed(OrigEmbed):
         super().__init__(color=color, **kwargs)
 
     def credits(self):
-        super().set_footer(text="by daniil10295")
+        self.set_footer(text="by daniil10295")

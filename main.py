@@ -8,8 +8,11 @@ from time import sleep
 from colorama import Fore, Style
 
 from core import Bot, log as logger
-from core.data import cfg, config, get_lc_key as lc, debug
+from core.data import cfg, config, debug
+from core.lc_manager import get_lang_manager
 from runner import *
+
+lc = get_lang_manager().__call__()
 
 if cfg("Settings", "DEBUG") == "True" or sys.argv.count("--debug") > 0:
     debug = True

@@ -18,7 +18,7 @@ __all__ = (
 
 def outdated(func):
     async def wrapper(*args, **kwargs):
-        log.warning(f"{func.__name__} is dedicated and will be removed soon")
+        log.warning(f"{func.__name__} is dedicated")
         await func(*args, **kwargs)
 
     return wrapper

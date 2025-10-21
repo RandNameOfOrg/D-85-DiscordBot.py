@@ -17,8 +17,12 @@ class Plugin(Cog):
         self.prefix = self.config['Bot']['msg_prefix']
         self.cog_load()
 
+    def save_json_data(self, data: dict) -> None:
+        with open(self.config['PATH_TO_CONFIG'], "w") as f:
+            f.write(str(data))
+
     def cog_load(self) -> None:
-        log.info(f'Loaded {self.__class__.__name__} cog. ')
+        log.debug(f'Loaded {self.__class__.__name__} cog. ')
 
     async def sync(self):
         await self.bot.tree.sync()
