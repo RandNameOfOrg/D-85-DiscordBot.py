@@ -19,6 +19,11 @@ prefix: **!** аnd **/**
 
 ###### **attention: all bot commands are made in Russian language**
 
+# TODO (RoadMap)
+
+- [ ] Fix 'votes' command
+- [ ] Add more cool features
+
 ##### Русское описание (ru-RU): [README.md](README.md)
 
 ###### v2

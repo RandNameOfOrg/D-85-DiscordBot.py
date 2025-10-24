@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from discord.ext.commands import Cog
-from core import Bot, config
 from logging import getLogger
+
+from discord.ext.commands import Cog
+
+from core import Bot, config
 
 log = getLogger(__name__)
 
@@ -13,9 +15,14 @@ class Plugin(Cog):
         self.bot = bot
         self.config = config
         self.prefix = self.config['Bot']['msg_prefix']
+        self.cog_load()
 
-    async def cog_load(self) -> None:
-        log.info(f'Loaded {self.__class__.__name__} cog. ')
+    def save_json_data(self, data: dict) -> None:
+        with open(self.config['PATH_TO_CONFIG'], "w") as f:
+            f.write(str(data))
+
+    def cog_load(self) -> None:
+        log.debug(f'Loaded {self.__class__.__name__} cog. ')
 
     async def sync(self):
         await self.bot.tree.sync()

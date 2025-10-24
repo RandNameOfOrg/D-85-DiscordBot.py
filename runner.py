@@ -8,8 +8,10 @@ from time import strftime, localtime, sleep
 from colorama import Fore, Style
 from prettytable import PrettyTable
 
-from core.data import cfg, lang_manager as lm, config, PATH_TO_CONFIG, debug
+from core.data import cfg, config, PATH_TO_CONFIG, debug
 from core.updater import Updater
+from core.lc_manager import get_lang_manager
+lm = get_lang_manager()
 
 __all__ = ("start_print", "RestartRequired", "start_setup", "update", "console")
 

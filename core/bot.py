@@ -2,13 +2,11 @@ import os
 import re
 import time
 from logging import getLogger
-from typing import Optional
 
 import discord
 from discord.ext import commands
 
 from .data import MAIN_DIR, cfg
-from .embed import Embed
 
 log = getLogger("D-Bot")
 
@@ -16,6 +14,14 @@ __all__ = (
     "Bot",
     "log",
 )
+
+
+def outdated(func):
+    async def wrapper(*args, **kwargs):
+        log.warning(f"{func.__name__} is dedicated")
+        await func(*args, **kwargs)
+
+    return wrapper
 
 
 class Bot(commands.AutoShardedBot):
@@ -31,28 +37,6 @@ class Bot(commands.AutoShardedBot):
                 await self.load_extension("cogs." + file.group(1))
 
     async def on_ready(self) -> None:
-        print(f"Bot Started as {self.user}")
+        print(f"\nBot Started as {self.user}")
         log.info(f"Started as {self.user} (ID: {self.user.id}) in " + time.strftime(
             f"%H:%M:%S"))
-
-    async def success(self, content: str, interaction: discord.Interaction, *, ephemeral: Optional[bool] = False,
-                      embed: Optional[bool] = True) -> Optional[discord.WebhookMessage]:
-        """Send a success message"""
-        if interaction.response.is_done():
-            if embed:
-                return await interaction.followup.send(embed=Embed(description=content, color=discord.Colour.green()),
-                                                       ephemeral=ephemeral)
-            else:
-                return await interaction.followup.send(content=f"[☑]{content}", ephemeral=ephemeral)
-        return None
-
-    async def error(self, content: str, interaction: discord.Interaction, *, ephemeral: Optional[bool] = True,
-                    embed: Optional[bool] = True) -> Optional[discord.WebhookMessage]:
-        """Send a error message"""
-        if interaction.response.is_done():
-            if embed:
-                return await interaction.followup.send(embed=Embed(description=content, color=discord.Colour.red()),
-                                                       ephemeral=ephemeral)
-            else:
-                return await interaction.followup.send(content=f"[❌]{content}", ephemeral=ephemeral)
-        return None
