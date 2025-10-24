@@ -20,6 +20,11 @@
 - Если DEBUG = True то укажите токен и app_id в .env файле
 - перейдите на https://discord.com/developers/applications/ выберете своё приложение и получите токен и app_id
 
+# TODO (RoadMap)
+
+- [ ] Починить votes
+- [ ] Добавить больше разных функций
+
 ##### English description (en): [en-EN](README_en.md)
 
 ###### v2
